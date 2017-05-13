@@ -1,4 +1,4 @@
-package com.kitri.admin.main;
+package com.kitri.admin.main.employee;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;

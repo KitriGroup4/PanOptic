@@ -3,6 +3,15 @@ package com.kitri.admin.main;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.kitri.admin.main.control.ControlJP;
+import com.kitri.admin.main.customer.CustomerJP;
+import com.kitri.admin.main.employee.EmployeeJP;
+import com.kitri.admin.main.leftover.LeftOverJP;
+import com.kitri.admin.main.management.ManagementJP;
+import com.kitri.admin.main.stat.StatJP;
+import com.kitri.admin.main.store.StoreJP;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
