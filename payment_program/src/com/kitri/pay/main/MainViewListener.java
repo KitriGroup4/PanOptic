@@ -15,6 +15,9 @@ public class MainViewListener implements ActionListener {
     public void actionPerformed(ActionEvent event) {
 	Object o = event.getSource();
 	
+	if(o == null){
+	    
+	}
 	
 	
 	
