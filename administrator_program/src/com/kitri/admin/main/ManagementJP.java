@@ -12,11 +12,14 @@ public class ManagementJP extends JPanel {
 	public ManagementJP() {
 		setLayout(new GridLayout(10, 1, 0, 0));
 		
-		JButton btnNewButton_1 = new JButton("\uAE09\uC5EC\uD604\uD669");
-		add(btnNewButton_1);
+		JButton wageManagement = new JButton("\uAE09\uC5EC\uAD00\uB9AC");
+		add(wageManagement);
 		
-		JButton btnNewButton = new JButton("\uC790\uC0B0");
-		add(btnNewButton);
+		JButton addEmployee = new JButton("\uC9C1\uC6D0\uB4F1\uB85D");
+		add(addEmployee);
+		
+		JButton assetManagement = new JButton("\uC790\uC0B0\uAD00\uB9AC");
+		add(assetManagement);
 
 	}
 

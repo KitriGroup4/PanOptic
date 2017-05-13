@@ -36,13 +36,9 @@ public class PcMain extends JFrame {
 	
     private CardLayout cl = new CardLayout();
     StoreJP storeJPanel = new StoreJP();
-	JButton btnNewButton = new JButton("\uB9E4\uC7A5");
 	CustomerJP customerJPanel = new CustomerJP();
-	JButton btnNewButton_1 = new JButton("\uACE0\uAC1D");
 	LeftOverJP leftOverJPanel = new LeftOverJP();
-	JButton btnNewButton_2 = new JButton("\uC7AC\uACE0");
 	EmployeeJP employeeJPanel = new EmployeeJP();
-	JButton btnNewButton_3 = new JButton("\uC9C1\uC6D0");
 	StatJP statJPanel = new StatJP();
 	ControlJP controlJPanel = new ControlJP();
 	ManagementJP managementJPanel = new ManagementJP();
@@ -112,13 +108,9 @@ public class PcMain extends JFrame {
 		
 		cardPanel.add(storeJPanel, topMenuTitle[0]);
 //		cardPanel.add(store, "1");
-		storeJPanel.add(btnNewButton);
 		cardPanel.add(customerJPanel, topMenuTitle[1]);
-		customerJPanel.add(btnNewButton_1);
 		cardPanel.add(leftOverJPanel, topMenuTitle[2]);
-		leftOverJPanel.add(btnNewButton_2);
 		cardPanel.add(employeeJPanel, topMenuTitle[3]);
-		employeeJPanel.add(btnNewButton_3);
 		cardPanel.add(statJPanel, topMenuTitle[4]);
 		cardPanel.add(controlJPanel, topMenuTitle[5]);
 		cardPanel.add(managementJPanel, topMenuTitle[6]);

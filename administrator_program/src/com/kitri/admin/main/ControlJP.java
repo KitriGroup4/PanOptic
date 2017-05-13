@@ -15,9 +15,6 @@ public class ControlJP extends JPanel {
 		JButton btnNewButton_1 = new JButton("\uC720\uD574\uD504\uB85C\uADF8\uB7A8 \uCC28\uB2E8");
 		add(btnNewButton_1);
 		
-		JButton btnNewButton_2 = new JButton("\uC2DC\uAC04\uC81C\uD55C");
-		add(btnNewButton_2);
-		
 		JButton btnNewButton = new JButton("\uB098\uC774\uC81C\uD55C");
 		add(btnNewButton);
 
