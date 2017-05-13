@@ -1,21 +1,21 @@
-package com.kitri.admin.main;
+package com.kitri.admin.main.store;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 
-public class ManagementJP extends JPanel {
+public class StoreJP extends JPanel {
 
 	/**
 	 * Create the panel.
 	 */
-	public ManagementJP() {
+	public StoreJP() {
 		setLayout(new GridLayout(10, 1, 0, 0));
 		
-		JButton btnNewButton_1 = new JButton("\uAE09\uC5EC\uD604\uD669");
+		JButton btnNewButton_1 = new JButton("\uB9E4\uCD9C");
 		add(btnNewButton_1);
 		
-		JButton btnNewButton = new JButton("\uC790\uC0B0");
+		JButton btnNewButton = new JButton("\uC815\uC0B0");
 		add(btnNewButton);
 
 	}

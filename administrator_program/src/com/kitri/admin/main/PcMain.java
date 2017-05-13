@@ -3,6 +3,15 @@ package com.kitri.admin.main;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.kitri.admin.main.control.ControlJP;
+import com.kitri.admin.main.customer.CustomerJP;
+import com.kitri.admin.main.employee.EmployeeJP;
+import com.kitri.admin.main.leftover.LeftOverJP;
+import com.kitri.admin.main.management.ManagementJP;
+import com.kitri.admin.main.stat.StatJP;
+import com.kitri.admin.main.store.StoreJP;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -35,22 +44,12 @@ public class PcMain extends JFrame {
 	JButton[] topMenuButton = new JButton[topMenuNum-1];		
 	
     private CardLayout cl = new CardLayout();
-//	JPanel store = new JPanel();
     StoreJP storeJPanel = new StoreJP();
-	JButton btnNewButton = new JButton("\uB9E4\uC7A5");
-//	JPanel customer = new JPanel();
 	CustomerJP customerJPanel = new CustomerJP();
-	JButton btnNewButton_1 = new JButton("\uACE0\uAC1D");
-//	JPanel leftover = new JPanel();
 	LeftOverJP leftOverJPanel = new LeftOverJP();
-	JButton btnNewButton_2 = new JButton("\uC7AC\uACE0");
-//	JPanel employee = new JPanel();
 	EmployeeJP employeeJPanel = new EmployeeJP();
-	JButton btnNewButton_3 = new JButton("\uC9C1\uC6D0");
-//	JPanel statJPanel = new JPanel();
 	StatJP statJPanel = new StatJP();
-	JPanel controlJPanel = new JPanel();
-//	JPanel management = new JPanel();
+	ControlJP controlJPanel = new ControlJP();
 	ManagementJP managementJPanel = new ManagementJP();
 	
 //////////////////////////////////////////////////////////////	
@@ -113,16 +112,14 @@ public class PcMain extends JFrame {
 		}
 		
 		
+//		left.add(cardPanel);
 		cardPanel.setLayout(cl);
 		
 		cardPanel.add(storeJPanel, topMenuTitle[0]);
-		storeJPanel.add(btnNewButton);
+//		cardPanel.add(store, "1");
 		cardPanel.add(customerJPanel, topMenuTitle[1]);
-		customerJPanel.add(btnNewButton_1);
 		cardPanel.add(leftOverJPanel, topMenuTitle[2]);
-		leftOverJPanel.add(btnNewButton_2);
 		cardPanel.add(employeeJPanel, topMenuTitle[3]);
-		employeeJPanel.add(btnNewButton_3);
 		cardPanel.add(statJPanel, topMenuTitle[4]);
 		cardPanel.add(controlJPanel, topMenuTitle[5]);
 		cardPanel.add(managementJPanel, topMenuTitle[6]);
