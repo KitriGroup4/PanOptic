@@ -39,6 +39,7 @@ public class MainViewLogic {
 	    if (o == buttons[i]) {
 		result = true;
 
+		
 		switch (i) {
 		case 0: // 회원가입
 		    System.out.println("회원가입");
