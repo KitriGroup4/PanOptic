@@ -40,6 +40,8 @@ public class MainViewLogic {
 		result = true;
 
 		
+		
+		
 		switch (i) {
 		case 0: // 회원가입
 		    System.out.println("회원가입");
