@@ -144,9 +144,9 @@ public class ClientHandlerThread extends Thread {
 			}
 
 			if (buffer.position() != 0) {
-			    buffer.flip();			 
+			    buffer.flip();
 			    recvData = cs.decode(buffer);
-			    isCipher(recvData.toString());
+			    conbinePacket(recvData.toString());
 			}
 
 			if (selected.isWritable()) {
@@ -182,44 +182,8 @@ public class ClientHandlerThread extends Thread {
 	}
     }
 
-    void isCipher(String message) {
-	System.out.println(message);
-	sendTestData(message);
-	// System.out.println("------=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------");
-	// String[] tempTemp = message.split("\n");
-	// for (int h = 0; h < tempTemp.length; h++) {
-	// message = tempTemp[h];
-	//
-	// int messageLength = message.length() - 1;
-	//
-	// String[] each;
-	// int eachSize;
-	// // each = message.split("!");
-	// // eachSize = each.length;
-	//
-	// if (message.indexOf("!") == -1) {
-	// System.out.println("message.indexOf(!) == -1");
-	// tempRecv.append(message);
-	// continue;
-	// } else {
-	// each = message.split("!");
-	// eachSize = each.length;
-	//
-	// if (tempRecv.length() != 0) {
-	// System.out.println("tempRecv != 0 ~~~~~~");
-	// each[0] = tempRecv.toString() + each[0];
-	//
-	// tempRecv = new StringBuilder("");
-	//
-	// }
-	// if (message.indexOf("!") != messageLength) {
-	// System.out.println("message.indexOf(!) != messageLength");
-	// tempRecv.append(each[eachSize - 1]);
-	//
-	// eachSize--;
-	//
-	// }
-	// }
+    void conbinePacket(String message) {
+
 	StringTokenizer lineToken = new StringTokenizer(message, "\n");
 	StringBuilder tempPacket = new StringBuilder("");
 	String part;
@@ -227,7 +191,7 @@ public class ClientHandlerThread extends Thread {
 	int packetSize = 0;
 	int partLen = 0;
 	String PATTERN = "!";
-	
+
 	while (lineToken.hasMoreTokens()) {
 	    part = lineToken.nextToken();
 	    partLen = part.length() - 1;
@@ -250,55 +214,14 @@ public class ClientHandlerThread extends Thread {
 	    for (int k = 0; k < packetSize; k++) {
 		String[] temp = packet[k].split("/");
 
-		String[] newData = new String[4];
-		dataPacket = new String[PacketInformation.packetSize];
+		String[] newData = new String[PacketInformation.PACKET_SIZE];
+		dataPacket = new String[PacketInformation.PACKET_SIZE];
 		for (int i = 0; i < temp.length; i++) {
-		    newData[i] = temp[i];
+		    dataPacket[i] = temp[i];
 		}
 
-		System.out.println(
-			"isCipher : " + newData[0] + "` " + newData[1] + "` " + newData[2] + "` " + newData[3]);
-
-		try {
-		    // int cipher = Integer.parseInt(newData[0]);
-		    // System.out.println("cipher : " + cipher);
-		    // switch (cipher) {
-		    // case PacketInformation.Cipher.LEA_RSA:
-		    //
-		    // if ((LEARSACount % 2) == 0) {
-		    // isResetLEA = false;
-		    // ServerThread.lea.setCt1(newData[1]);
-		    // } else {
-		    // isResetLEA = true;
-		    // ServerThread.lea.setCt2(newData[1]);
-		    // setLEARSAPacket();
-		    // }
-		    //
-		    // LEARSACount++;
-		    // break;
-		    // case PacketInformation.Cipher.RSA:
-		    // ServerThread.serverRSA.setTempRsa(newData[1]);
-		    // setRSAPacket();
-		    // break;
-		    // case PacketInformation.Cipher.PLAIN:
-		    // dataPacket[0] = newData[1];
-		    // dataPacket[1] = newData[2];
-		    // dataPacket[2] = newData[3];
-		    // System.out
-		    // .println("divisionData " + dataPacket[0] + ", " +
-		    // dataPacket[1] + ", " + dataPacket[2]);
-		    //
-		    // analysisData();
-		    // break;
-		    // }
-		} catch (Exception e) {
-		    System.out.println("isCipher error : " + e.getMessage());
-		    System.out.println("isCipher error : " + e.toString());
-		    // tempRecv = new StringBuilder("");
-		    // each = null;
-		    // temp = null;
-		    // break;
-		}
+		System.out.println("conbinePacket() : " + dataPacket[0] + "` " + dataPacket[1] + "` " + dataPacket[2]);
+		analysisPacket();
 
 	    }
 	}
@@ -307,116 +230,30 @@ public class ClientHandlerThread extends Thread {
 
     }
 
-    void divisionData(String message) {
-	// dataPacket = message.split("/");
-	// System.out.println("divisionData() : " +
-	// dataPacket[Packet.SITUATION.getDataNum()] + ", " +
-	// dataPacket[Packet.DATA_TYPE.getDataNum()] + ", " +
-	// dataPacket[Packet.DATA.getDataNum()]);
-	// Server.addLog("divisionData() : " +
-	// dataPacket[Packet.SITUATION.getDataNum()] + ", " +
-	// dataPacket[Packet.DATA_TYPE.getDataNum()] + ", " +
-	// dataPacket[Packet.DATA.getDataNum()]);
-	// message = message.replace(System.getProperty("line.separator"), "");
-	String[] temp = message.split("/");
-	System.out.println("temp : " + message + "len : " + temp.length);
-	//
-	// if(temp.length > 6)
-	// {
-	// System.out.print(temp[3].replace(System.getProperty("line.separator"),
-	// ""));
-	// System.out.print(temp[6]);
-	// }
-	//
-	dataPacket = new String[PacketInformation.packetSize];
-
-	for (int i = 0; i < temp.length; i++) {
-	    dataPacket[i % PacketInformation.packetSize] = temp[i];// .replace(System.getProperty("line.separator"),
-								   // "");
-	    // System.out.println("dataPacket : " + dataPacket[i %
-	    // PacketInformation.packetSize]);
-	    if (i != 0 && ((i + 1) % PacketInformation.packetSize == 0 || i == (temp.length - 1))) {
-		System.out.println("divisionData() : " + dataPacket[PacketInformation.PacketStructure.SITUATION] + ", "
-			+ dataPacket[PacketInformation.PacketStructure.DATA_TYPE] + ", "
-			+ dataPacket[PacketInformation.PacketStructure.DATA]);
-		Server.addLog("divisionData() : " + dataPacket[PacketInformation.PacketStructure.SITUATION] + ", "
-			+ dataPacket[PacketInformation.PacketStructure.DATA_TYPE] + ", "
-			+ dataPacket[PacketInformation.PacketStructure.DATA]);
-
-		// analysisData();
-	    }
-	}
-	// dataPacket = message.split("/");
+    void divisionPacket(String message) {
 
     }
 
-    // void analysisData() {
-    // // divisionData(message);
-    // // int situation =
-    // // compareSituation(dataPacket[Packet.SITUATION.getDataNum()]);
-    // int situation;
-    // int dataType;
-    // try {
-    // situation = Integer.parseInt(dataPacket[Packet.SITUATION.getDataNum()]);
-    // dataType = Integer.parseInt(dataPacket[Packet.DATA_TYPE.getDataNum()]);
-    //
-    // switch (situation) {
-    // case PacketInformation.Situation.LOGIN:
-    // loginData(dataType);
-    // break;
-    // case PacketInformation.Situation.JOIN:
-    // joinData(dataType);
-    // break;
-    // case PacketInformation.Situation.CERTIFICATION:
-    // certificationData(dataType);
-    // break;
-    // case PacketInformation.Situation.LISTDEVICE:
-    // listDeviceData(dataType);
-    // break;
-    // case PacketInformation.Situation.DEVICEMENU:
-    // deviceMenuData(dataType);
-    // break;
-    // case PacketInformation.Situation.SECOND:
-    // secondData(dataType);
-    // break;
-    // case PacketInformation.Situation.IDLE:
-    // idleData(dataType);
-    // break;
-    // case PacketInformation.Situation.STATISTICS:
-    // services.listDeviceMessageData(dataPacket[PacketInformation.PacketStructure.DATA]);
-    // break;
-    // case PacketInformation.Share.AUTO:
-    // isAuto = true;
-    // services.deviceValueAnalysis(dataPacket[PacketInformation.PacketStructure.DATA]);
-    //
-    // break;
-    // case PacketInformation.Share.AUTO_OUT:
-    // isAutoOut = true;
-    // services.deviceValueAnalysis(dataPacket[PacketInformation.PacketStructure.DATA]);
-    // case PacketInformation.Situation.RSA:
-    // RSAData(dataType);
-    //
-    // break;
-    // case PacketInformation.Situation.HOME:
-    // homeData(dataType);
-    // break;
-    // case PacketInformation.Situation.MANAGER:
-    // managerData(dataType);
-    // break;
-    // case PacketInformation.Situation.SETTING:
-    // settingData(dataType);
-    // break;
-    // case PacketInformation.Situation.CONTROL_PLAIN:
-    // controlPlainData(dataType);
-    // break;
-    // }
-    // } catch (Exception e) {
-    // System.out.println("ananlysis error : " + e.toString());
-    // }
-    //
-    // }
-    
-    public void sendTestData(String str){
+    void analysisPacket() {
+	// divisionData(message);
+	// int situation =
+	// compareSituation(dataPacket[Packet.SITUATION.getDataNum()]);
+	int programValue;
+	int packetType;
+
+	try {
+	    programValue = Integer.parseInt(dataPacket[PacketInformation.PacketStructrue.PROGRAM_VALUE]);
+	    packetType = Integer.parseInt(dataPacket[PacketInformation.PacketStructrue.PACKET_TYPE]);
+	    
+	    
+
+	} catch (Exception e) {
+	    System.out.println("ananlysis error : " + e.toString());
+	}
+
+    }
+
+    public void sendTestData(String str) {
 	try {
 	    System.out.println("sendTestData");
 	    client.write(ByteBuffer.wrap(str.getBytes()));

@@ -1,12 +1,9 @@
-package com.kitri.admin.server;
+package com.kitri.pay.network;
 
 /*
  * programvalue/packet_type/data
  */
 public class PacketInformation {
-    
-    static final byte PACKET_SIZE = 3;
-    
 
     class ProgramValue {
 	static final byte ADMIN = 0;

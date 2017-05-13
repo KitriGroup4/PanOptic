@@ -31,15 +31,10 @@ public class Network implements Runnable {
 //	    writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
 	    writer = new PrintWriter(socket.getOutputStream(), true);
 	    
-	    System.out.println("user start");
 	    while (isRunnable) {
 		// len = reader.read(byteBuffer);
 
-		sendPacket("kitri kitri kitri");
-		System.out.println("????");
 		packet = buffReader.readLine();
-		System.out.println("!!!!");
-		System.out.println(packet);
 		
 //		sendPacket();
 		// byte[] buffer = new byte[len];
