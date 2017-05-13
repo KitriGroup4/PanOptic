@@ -18,7 +18,7 @@ public class MainView extends JFrame {
     private String[] pointStr = { "1000P", "3000P", "5000P", "10000P", "15000P" };
     private String[] functionStr = { "회원가입", "포인트결제", "카드결제" };
 
-    private JButton[] timeButton;
+    private JLabel[] timeButton;
     private JButton[] pointButton;
     private JButton[] functionButton;
 
@@ -80,9 +80,11 @@ public class MainView extends JFrame {
 	timePanel.add(timeButtonPanel, BorderLayout.CENTER);
 	timeButtonPanel.setLayout(new GridLayout(4, 2, 20, 20));
 
-	timeButton = new JButton[TIME_COUNT];
+	timeButton = new JLabel[TIME_COUNT];
 	for (int i = 0; i < TIME_COUNT; i++) {
-	    timeButton[i] = new JButton(timeStr[i]);
+	    timeButton[i] = new JLabel(timeStr[i]);
+	    timeButton[i].setHorizontalAlignment(JLabel.CENTER);
+	    timeButton[i].setVerticalAlignment(JLabel.CENTER);
 	    timeButtonPanel.add(timeButton[i]);
 	}
 
