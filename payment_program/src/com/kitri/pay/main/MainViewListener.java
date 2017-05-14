@@ -5,7 +5,7 @@ import java.awt.event.*;
 public class MainViewListener extends MouseAdapter implements ActionListener {
 
     private MainView view;
-    private MainViewLogic logic;
+    public MainViewLogic logic;
 
     public MainViewListener(MainView view) {
 	this.view = view;

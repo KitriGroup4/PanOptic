@@ -41,6 +41,7 @@ public class MainView extends JFrame {
 
     private MainViewListener listener;
     private JLabel moneyLabel;
+    
 
     /**
      * Launch the application.
@@ -62,10 +63,13 @@ public class MainView extends JFrame {
      * Create the frame.
      */
     public MainView() {
+	
 	isClickTime = new boolean[TIME_COUNT];
 	isClickPoint = new boolean[POINT_COUNT];
 
 	listener = new MainViewListener(this);
+	listener.logic.getComPrepaidInfo();
+	listener.logic.getPointInfo();
 
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	setBounds(100, 100, 450, 300);

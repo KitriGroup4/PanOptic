@@ -106,7 +106,6 @@ public class ClientHandlerThread extends Thread {
 	try {
 
 	    System.out.println("Client :: started");
-	    sendTestData("Client :: started!!!");
 	    // Server.addLog("Client :: started");
 
 	    client.configureBlocking(false);

@@ -28,15 +28,16 @@ public class Network implements Runnable {
 	    socket.connect(new InetSocketAddress(IP, PORT), SOCKET_TIMEOUT);
 	    buffReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "EUC-KR"));
 	    // reader = new BufferedInputStream(socket.getInputStream());
-//	    writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
+	    // writer = new PrintWriter(new BufferedWriter(new
+	    // OutputStreamWriter(socket.getOutputStream())));
 	    writer = new PrintWriter(socket.getOutputStream(), true);
-	    
+
 	    while (isRunnable) {
 		// len = reader.read(byteBuffer);
 
 		packet = buffReader.readLine();
-		
-//		sendPacket();
+
+		// sendPacket();
 		// byte[] buffer = new byte[len];
 		// for(int i = 0; i < len; i++){
 		// buffer[i] = byteBuffer[i];
@@ -67,11 +68,62 @@ public class Network implements Runnable {
 
     }
 
+    public void sendPacket(int programValue, int packetType, String data) {
+	StringBuilder buff = new StringBuilder("");
+
+	buff.append(programValue);
+	buff.append("/");
+	buff.append(packetType);
+	buff.append("/");
+	buff.append(data);
+	buff.append("!");
+
+	writer.println(buff.toString());
+    }
+
+    public void sendPacket(int programValue, int packetType, int data) {
+	StringBuilder buff = new StringBuilder("");
+
+	buff.append(programValue);
+	buff.append("/");
+	buff.append(packetType);
+	buff.append("/");
+	buff.append(data);
+	buff.append("!");
+
+	writer.println(buff.toString());
+    }
+
+    public void sendPacket(int packetType, byte data) {
+	StringBuilder buff = new StringBuilder("");
+
+	buff.append(PacketInformation.ProgramValue.PAYMENT);
+	buff.append("/");
+	buff.append(packetType);
+	buff.append("/");
+	buff.append(data);
+	buff.append("!");
+
+	writer.println(buff.toString());
+    }
+
+    public void sendPacket(int packetType, String data) {
+	StringBuilder buff = new StringBuilder("");
+
+	buff.append(PacketInformation.ProgramValue.PAYMENT);
+	buff.append("/");
+	buff.append(packetType);
+	buff.append("/");
+	buff.append(data);
+	buff.append("!");
+
+	writer.println(buff.toString());
+    }
+
     public void sendPacket(String str) {
 	if (writer != null) {
 	    writer.println(str);
-	}
-	else{
+	} else {
 	    System.out.println("null");
 	}
     }
@@ -84,4 +136,3 @@ public class Network implements Runnable {
     }
 
 }
-
