@@ -40,7 +40,7 @@ public class ComDto {
     
     @Override
     public String toString() {
-        return comNum + ", " + userNum + ", " + isUse + ", " + isBooking;
+        return comNum + "," + userNum + "," + isUse + "," + isBooking;
     }
 
 }

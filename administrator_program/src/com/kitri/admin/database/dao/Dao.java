@@ -19,6 +19,7 @@ public class Dao {
 	    e.printStackTrace();
 	}
     }
+    
 
     public Connection getConnection() throws SQLException {
 	return DriverManager.getConnection(url, uid, upw);

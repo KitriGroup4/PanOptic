@@ -13,7 +13,7 @@ public class ComDao extends Dao {
 	
     }
     
-    public ArrayList<ComDto> selectAllCom(){
+    public ArrayList<ComDto> selectAll(){
 	ArrayList<ComDto> dtos = new ArrayList<>();
 	
 	try {
@@ -41,7 +41,7 @@ public class ComDao extends Dao {
 	return dtos;
     }
     
-    public boolean insertCom(int comNum, int userNum) {
+    public boolean insert(int comNum, int userNum) {
 	int result = 0;
 	
 	try {
@@ -63,8 +63,8 @@ public class ComDao extends Dao {
     public static void main(String[] args) {
 	ComDao dao = new ComDao();
 	
-	System.out.println(Arrays.toString(dao.selectAllCom().toArray()));	
-//	dao.insertCom(4, 4);
-	System.out.println(Arrays.toString(dao.selectAllCom().toArray()));
+//	System.out.println(Arrays.toString(dao.selectAllCom().toArray()));	
+////	dao.insertCom(4, 4);
+//	System.out.println(Arrays.toString(dao.selectAllCom().toArray()));
     }
 }

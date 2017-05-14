@@ -68,8 +68,6 @@ public class MainView extends JFrame {
 	isClickPoint = new boolean[POINT_COUNT];
 
 	listener = new MainViewListener(this);
-	listener.logic.getComPrepaidInfo();
-	listener.logic.getPointInfo();
 
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	setBounds(100, 100, 450, 300);
@@ -133,6 +131,7 @@ public class MainView extends JFrame {
 	for (int i = 0; i < FUNCTION_COUNT; i++) {
 	    functionButton[i] = new JButton(functionStr[i]);
 	    functionButton[i].addActionListener(listener);
+	    functionButton[i].setFont(new Font("±¼¸²", Font.PLAIN, 30));
 	    functionPanel.add(functionButton[i]);
 
 	}

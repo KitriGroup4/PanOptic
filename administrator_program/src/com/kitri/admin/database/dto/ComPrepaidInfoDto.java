@@ -29,4 +29,9 @@ public class ComPrepaidInfoDto {
 	this.prepaidPrice = prepaidPrice;
     }
 
+    @Override
+    public String toString() {
+	return prepaidNum + "," + prepaidTime + "," + prepaidPrice;
+    }
+
 }

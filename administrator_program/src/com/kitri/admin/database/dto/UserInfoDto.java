@@ -85,7 +85,7 @@ public class UserInfoDto {
     
     @Override
     public String toString() {
-        return userNum + ", " + userId + ", " + userPw + ", " + userHp + ", " + userEmail + ", " + userAccuTime + ", " + userLeftTime + ", " + userJoinDate;
+        return userNum + "," + userId + "," + userPw + "," + userHp + "," + userEmail + "," + userAccuTime + "," + userLeftTime + "," + userJoinDate;
     }
 
 }

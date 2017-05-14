@@ -9,21 +9,19 @@ import com.kitri.pay.network.Network;
 import com.kitri.pay.network.PacketInformation;
 
 public class MainViewLogic {
-    private Network network;
-    private Thread thread;
 
     public MainViewLogic() {
-	network = new Network();
-	thread = new Thread(network);
-	thread.start();
+	
+	getComPrepaidInfo();
+	getPointInfo();
     }
 
     public void getComPrepaidInfo() {
-	network.sendPacket(PacketInformation.PacketType.COM_PREPAID_INFO, PacketInformation.Operation.GET);
+	Main.network.sendPacket(PacketInformation.Operation.GET, PacketInformation.PacketType.COM_PREPAID_INFO, PacketInformation.IDLE);
     }
 
     public void getPointInfo() {
-	network.sendPacket(PacketInformation.PacketType.POINT_INFO, PacketInformation.Operation.GET);
+	Main.network.sendPacket(PacketInformation.Operation.GET, PacketInformation.PacketType.POINT_INFO, PacketInformation.IDLE);
     }
 
     public boolean isClickButton(Object o, JLabel[] buttons, boolean[] isClick) {
