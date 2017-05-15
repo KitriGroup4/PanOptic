@@ -26,14 +26,7 @@ public class ClientHandlerThread extends Thread {
     private ServerThread serverThread;
     public Services services;
 
-    private String id;
-    private String password;
-    private String passwordCheck;
-    private String phoneNumber;
     public int myCount;
-
-    public CurrentInformation currentInformation; // fstatic
-    public Succeed succeed;
 
     public int index;
     public String key = "9999";
@@ -44,47 +37,12 @@ public class ClientHandlerThread extends Thread {
 
     public StringBuilder tempRecv;
 
-    public boolean isResetLEA;
-
-    public class CurrentInformation {
-	public String userId;
-	public int userNumber;
-	public String deviceId;
-	public String menuNumber;
-	public String userPassword;
-	public int situation;
-	public String dateTime;
-	public String logData;
-	public boolean isManager;
-	public int locationType;
-    }
-
-    public static class Succeed {
-	public static boolean certification;
-	public static boolean login;
-	public static boolean join;
-    }
-
-    public enum Packet {
-	SITUATION(0), DATA_TYPE(1), DATA(2);
-
-	Packet(int num) {
-	    dataNum = num;
-	}
-
-	int dataNum;
-
-	public int getDataNum() {
-	    return dataNum;
-	}
-    }
+    public int programValue;
 
     public ClientHandlerThread(Abortable abortable, SocketChannel client, Selector selector, ServerThread serverThread,
 	    int handlerCount) {
 	this.abortable = abortable;
 	this.client = client;
-	currentInformation = new CurrentInformation();
-	succeed = new Succeed();
 	services = new Services(this);
 	this.serverThread = serverThread;
 	// this.selector = selector;
@@ -106,7 +64,6 @@ public class ClientHandlerThread extends Thread {
 	try {
 
 	    System.out.println("Client :: started");
-	    sendTestData("Client :: started!!!");
 	    // Server.addLog("Client :: started");
 
 	    client.configureBlocking(false);
@@ -146,6 +103,7 @@ public class ClientHandlerThread extends Thread {
 			if (buffer.position() != 0) {
 			    buffer.flip();
 			    recvData = cs.decode(buffer);
+			    System.out.print(recvData.toString());
 			    conbinePacket(recvData.toString());
 			}
 
@@ -183,7 +141,7 @@ public class ClientHandlerThread extends Thread {
     }
 
     void conbinePacket(String message) {
-
+	System.out.print(message);
 	StringTokenizer lineToken = new StringTokenizer(message, "\n");
 	StringBuilder tempPacket = new StringBuilder("");
 	String part;
@@ -193,7 +151,9 @@ public class ClientHandlerThread extends Thread {
 	String PATTERN = "!";
 
 	while (lineToken.hasMoreTokens()) {
-	    part = lineToken.nextToken();
+	    part = lineToken.nextToken().trim();
+	    
+	    System.out.print(part);
 	    partLen = part.length() - 1;
 	    if (part.indexOf(PATTERN) == -1) {
 		tempPacket.append(part);
@@ -216,21 +176,77 @@ public class ClientHandlerThread extends Thread {
 
 		String[] newData = new String[PacketInformation.PACKET_SIZE];
 		dataPacket = new String[PacketInformation.PACKET_SIZE];
-		for (int i = 0; i < temp.length; i++) {
+		for (int i = 0; i < PacketInformation.PACKET_SIZE; i++) {
 		    dataPacket[i] = temp[i];
 		}
 
-		System.out.println("conbinePacket() : " + dataPacket[0] + "` " + dataPacket[1] + "` " + dataPacket[2]);
-		analysisPacket();
+		System.out.println("conbinePacket() : " + dataPacket[0] + "` " + dataPacket[1] + "` " + dataPacket[2]
+			+ "` " + dataPacket[3]);
+		dicisionProgram();
 
 	    }
 	}
-	// }
-	// }
 
     }
 
     void divisionPacket(String message) {
+
+    }
+
+    private void dicisionProgram() {
+	System.out.println("dicisionProgram()");
+	int programValue;
+	int operator;
+
+	programValue = Integer.parseInt(dataPacket[PacketInformation.PacketStructrue.PROGRAM_VALUE]);
+	operator = Integer.parseInt(dataPacket[PacketInformation.PacketStructrue.OPERATOR]);
+	
+	switch (programValue) {
+	case PacketInformation.ProgramValue.USER:
+	    programValue = PacketInformation.ProgramValue.USER;
+	    break;
+	case PacketInformation.ProgramValue.PAYMENT:
+	    programValue = PacketInformation.ProgramValue.PAYMENT;
+	    break;
+	case PacketInformation.ProgramValue.ADMIN:
+	    programValue = PacketInformation.ProgramValue.ADMIN;
+	    break;
+	default:
+	    return;
+	}
+	
+	dicisionOperator(operator);
+
+    }
+
+    private void dicisionOperator(int operator) {
+	System.out.println("dicisionOperator()");
+	int packetType = Integer.parseInt(dataPacket[PacketInformation.PacketStructrue.PACKET_TYPE]);
+
+	switch (operator) {
+	case PacketInformation.Operation.GET:
+	    getRequest(packetType);
+	    break;
+	default:
+	}
+    }
+
+    private void getRequest(int packetType) {
+	System.out.println("getRequest()");
+	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
+	System.out.println(packetType);
+	switch (packetType) {
+	case PacketInformation.PacketType.COM_PREPAID_INFO:
+	    services.getComPrepaidInfo();
+	    break;
+	case PacketInformation.PacketType.POINT_INFO:
+
+	    break;
+	default:
+	}
+    }
+
+    private void paymentComPrepaidInfo(String data) {
 
     }
 
@@ -244,8 +260,6 @@ public class ClientHandlerThread extends Thread {
 	try {
 	    programValue = Integer.parseInt(dataPacket[PacketInformation.PacketStructrue.PROGRAM_VALUE]);
 	    packetType = Integer.parseInt(dataPacket[PacketInformation.PacketStructrue.PACKET_TYPE]);
-	    
-	    
 
 	} catch (Exception e) {
 	    System.out.println("ananlysis error : " + e.toString());
@@ -253,173 +267,98 @@ public class ClientHandlerThread extends Thread {
 
     }
 
-    public void sendTestData(String str) {
-	try {
-	    System.out.println("sendTestData");
-	    client.write(ByteBuffer.wrap(str.getBytes()));
-	    System.out.println("sendTestData");
+    public void sendPacket(int programValue, int operator, int packetType, String data) {
+	StringBuilder buff = new StringBuilder("");
 
+	buff.append(programValue);
+	buff.append("/");
+	buff.append(operator);
+	buff.append("/");
+	buff.append(packetType);
+	buff.append("/");
+	buff.append(data);
+	buff.append("!");
+
+	try {
+	    client.write(ByteBuffer.wrap(buff.toString().getBytes()));
 	} catch (IOException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
     }
 
-    public void sendData(int situation, int dataType, String data) {
+    public void sendPacket(int programValue, int operator, int packetType, int data) {
+	StringBuilder buff = new StringBuilder("");
 
-	String temp = "";// = Integer.toString(PacketInformation.Cipher.PLAIN) +
-			 // "/" + situation + "/" + dataType + "/" + data;
-
+	buff.append(programValue);
+	buff.append("/");
+	buff.append(operator);
+	buff.append("/");
+	buff.append(packetType);
+	buff.append("/");
+	buff.append(data);
+	buff.append("!");
 	try {
-	    System.out.println("sendData() : " + temp);
-	    temp += "!";
-	    client.write(ByteBuffer.wrap(temp.getBytes()));
+	    client.write(ByteBuffer.wrap(buff.toString().getBytes()));
 	} catch (IOException e) {
-	    Server.addLog("sendData() error : " + e.toString());
+	    e.printStackTrace();
 	}
-
     }
 
-    public void sendDataEnd() {
+    public void sendPacket(int operator, int packetType, byte data) {
+	StringBuilder buff = new StringBuilder("");
+
+	buff.append(PacketInformation.ProgramValue.PAYMENT);
+	buff.append("/");
+	buff.append(operator);
+	buff.append("/");
+	buff.append(packetType);
+	buff.append("/");
+	buff.append(data);
+	buff.append("!");
 	try {
-	    String temp = "-1!";
-	    client.write(ByteBuffer.wrap(temp.getBytes()));
+	    client.write(ByteBuffer.wrap(buff.toString().getBytes()));
 	} catch (IOException e) {
-	    Server.addLog("sendDataEnd() error : " + e.toString());
+	    e.printStackTrace();
 	}
     }
 
-    public void sendDataRSA(int situation, int dataType, String data) {
-	String temp = situation + "/" + dataType + "/" + data + "/";
+    public void sendPacket(int operator, int packetType, String data) {
+	StringBuilder buff = new StringBuilder("");
+
+	buff.append(PacketInformation.ProgramValue.PAYMENT);
+	buff.append("/");
+	buff.append(operator);
+	buff.append("/");
+	buff.append(packetType);
+	buff.append("/");
+	buff.append(data);
+	buff.append("!");
 
 	try {
-	    // rsa.RsaEncryption(temp);
-
-	    System.out.println("sendData() : " + temp);
-	    // temp = Integer.toString(PacketInformation.Cipher.RSA) + "/" +
-	    // rsa.sendTempRsa() + "!";
-	    client.write(ByteBuffer.wrap(temp.getBytes()));
+	    client.write(ByteBuffer.wrap(buff.toString().getBytes()));
 	} catch (IOException e) {
-	    Server.addLog("sendData() error : " + e.toString());
+	    e.printStackTrace();
 	}
     }
 
-    public void sendDataRSA(int situation, int dataType, byte[] data) {
-	String temp = "";// = Integer.toString(PacketInformation.Cipher.RSA) +
-			 // "/" + situation + "/" + dataType + "/" + data + "!";
+    public void sendPacket(String packet) {
 	try {
-	    // Server.addLog("sendDataRSA() : " + temp );
-	    System.out.println("sendDataRSA() : " + temp);
-	    client.write(ByteBuffer.wrap(temp.getBytes()));
+	    System.out.println(packet);
+	    packet += "\n";
+	    client.write(ByteBuffer.wrap(packet.getBytes()));
+	    
 	} catch (IOException e) {
-	    Server.addLog("sendData() error : " + e.toString());
+	    e.printStackTrace();
 	}
+
     }
 
-    public void sendDataLEARSA(int situation, int dataType, String data) {
-	StringBuffer temp = new StringBuffer("");
-	temp.append(situation + "/");
-	temp.append(dataType + "/");
-	temp.append(data + "/");
-	// System.out.println("sendDataLEARSA : " + temp.toString());
-	// String temp = situation + "/" + dataType + "/" + data + "/";
-
-	// ServerThread.lea.encryption(temp);
-	// temp = Integer.toString(PacketInformation.Cipher.LEA_RSA) + "/" +
-	// temp;
-
-	try {
-	    //// ServerThread.lea.encryption(temp);
-	    //
-	    // // String temp2 =
-	    //// Integer.toString(PacketInformation.Cipher.LEA_RSA)
-	    // // + "/" + ServerThread.lea.sendCt1() + "!";
-	    // StringBuilder temp2 = new
-	    //// StringBuilder(PacketInformation.Cipher.LEA_RSA + "/" +
-	    //// ServerThread.lea.sendCt1());
-	    // System.out.println("sendDataLEARSA() : " + temp2);
-	    // temp2.append("!");
-	    //
-	    // client.write(ByteBuffer.wrap(temp2.toString().getBytes()));
-	    //
-	    // // temp2 = Integer.toString(PacketInformation.Cipher.LEA_RSA) +
-	    //// "/"
-	    // // + ServerThread.lea.sendCt2() + "!";
-	    // temp2 = new StringBuilder(PacketInformation.Cipher.LEA_RSA + "/"
-	    //// + ServerThread.lea.sendCt2());
-	    // System.out.println("sendDataLEARSA() : " + temp2);
-	    // temp2.append("!");
-	    // client.write(ByteBuffer.wrap(temp2.toString().getBytes()));
-	    //
-	    // // Server.addLog("sendDataLEARSA() : " + temp2 );
-	    //
-	    // // client.write(ByteBuffer.wrap(temp.getBytes()));
-	} catch (Exception e) {
-	    Server.addLog("sendData() error : " + e.toString());
-	}
-    }
+   
 
     public void deleteThreadSocket() {
 	serverThread.socketList.remove(myCount);
 	// serverThread.clientList.remove(index);
     }
-
-    // void isCipher(String message)
-    // {
-    // String[] each = message.split("!");
-    //
-    // for(int k = 0; k < each.length; k++)
-    // {
-    // String[] temp = each[k].split("/");
-    //
-    // String[] newData = new String[4];
-    // dataPacket = new String[PacketInformation.packetSize];
-    //
-    // for(int i = 0; i < temp.length; i++)
-    // {
-    // newData[i % (PacketInformation.packetSize + 1)] = temp[i];
-    //
-    // if(i != 0 && (i % (PacketInformation.packetSize + 1) == 0 || i ==
-    // (temp.length - 1)))
-    // {
-    // System.out.println("isCipher " + newData[0] + ", " + newData[1] + ", " +
-    // newData[2] + ", " + newData[3]);
-    //
-    // switch(Integer.parseInt(newData[0]))
-    // {
-    // case PacketInformation.Cipher.LEA_RSA:
-    //
-    // if((LEARSACount % 2) == 0)
-    // {
-    // ServerThread.lea.setCt1(newData[1]);
-    // }
-    // else
-    // {
-    // ServerThread.lea.setCt2(newData[1]);
-    // setPacket();
-    // }
-    //
-    // LEARSACount++;
-    // break;
-    // case PacketInformation.Cipher.RSA:
-    //
-    // break;
-    // case PacketInformation.Cipher.PLAIN:
-    // dataPacket[0] = newData[1];
-    // dataPacket[1] = newData[2];
-    // dataPacket[2] = newData[3];
-    // System.out.println("divisionData " + dataPacket[0] + ", " + dataPacket[1]
-    // + ", " + dataPacket[2]);
-    //
-    // analysisData();
-    // break;
-    // }
-    // }
-    // }
-    // }
-    //
-    //
-    //
-    // }
 
 }

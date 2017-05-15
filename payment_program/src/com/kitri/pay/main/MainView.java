@@ -41,6 +41,7 @@ public class MainView extends JFrame {
 
     private MainViewListener listener;
     private JLabel moneyLabel;
+    
 
     /**
      * Launch the application.
@@ -62,6 +63,7 @@ public class MainView extends JFrame {
      * Create the frame.
      */
     public MainView() {
+	
 	isClickTime = new boolean[TIME_COUNT];
 	isClickPoint = new boolean[POINT_COUNT];
 
@@ -129,6 +131,7 @@ public class MainView extends JFrame {
 	for (int i = 0; i < FUNCTION_COUNT; i++) {
 	    functionButton[i] = new JButton(functionStr[i]);
 	    functionButton[i].addActionListener(listener);
+	    functionButton[i].setFont(new Font("±¼¸²", Font.PLAIN, 30));
 	    functionPanel.add(functionButton[i]);
 
 	}

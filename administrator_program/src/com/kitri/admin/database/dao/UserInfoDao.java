@@ -15,7 +15,7 @@ public class UserInfoDao extends Dao {
 	
     }
 
-    public ArrayList<UserInfoDto> selectAllUserInfo() {
+    public ArrayList<UserInfoDto> selectAll() {
 	ArrayList<UserInfoDto> dtos = new ArrayList<>();
 
 	try {
@@ -52,7 +52,7 @@ public class UserInfoDao extends Dao {
 	return dtos;
     }
 
-    public boolean insertUserInfo(int num, String name, String id, String pw, String hp, String email) {
+    public boolean insert(int num, String name, String id, String pw, String hp, String email) {
 	int result = 0;
 
 	try {
@@ -77,17 +77,17 @@ public class UserInfoDao extends Dao {
 
     }
 
-    public static void main(String[] args) {
-	UserInfoDao u = new UserInfoDao();
-
-	ArrayList<UserInfoDto> dtos = u.selectAllUserInfo();
-//	System.out.println(u.insertUserInfo(4, "321312231", "32332", "32w2ew", "32we2432", "qweq5wr@qwqwe"));
-
-	int size = dtos.size();
-	for (int i = 0; i < size; i++) {
-	    System.out.println(dtos.get(i).toString());
-	}
-
-    }
+//    public static void main(String[] args) {
+//	UserInfoDao u = new UserInfoDao();
+//
+//	ArrayList<UserInfoDto> dtos = u.selectAllUserInfo();
+////	System.out.println(u.insertUserInfo(4, "321312231", "32332", "32w2ew", "32we2432", "qweq5wr@qwqwe"));
+//
+//	int size = dtos.size();
+//	for (int i = 0; i < size; i++) {
+//	    System.out.println(dtos.get(i).toString());
+//	}
+//
+//    }
 
 }

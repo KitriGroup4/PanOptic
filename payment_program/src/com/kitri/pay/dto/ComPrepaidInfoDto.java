@@ -1,4 +1,4 @@
-package com.kitri.admin.database.dto;
+package com.kitri.pay.dto;
 
 public class ComPrepaidInfoDto {
     private int prepaidNum;

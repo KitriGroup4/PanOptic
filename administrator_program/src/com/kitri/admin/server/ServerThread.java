@@ -136,7 +136,7 @@ public class ServerThread extends Thread {
 	 
 	Enumeration<Integer> enums = socketList.keys();
 	while(enums.hasMoreElements()){
-	    socketList.get(enums.nextElement()).sendData(situation, dataType, data);
+//	    socketList.get(enums.nextElement()).sendData(situation, dataType, data);
 	}
 
     }
