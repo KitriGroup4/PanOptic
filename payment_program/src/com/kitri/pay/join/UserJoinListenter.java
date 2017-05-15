@@ -8,9 +8,11 @@ import com.kitri.pay.main.Main;
 public class UserJoinListenter implements ActionListener {
 
     UserJoin join;
+    UserJoinLogic logic;
 
     public UserJoinListenter(UserJoin join) {
 	this.join = join;
+	logic = new UserJoinLogic();
     }
 
     @Override
@@ -20,11 +22,10 @@ public class UserJoinListenter implements ActionListener {
 	if (o == join.joinCloseBtn) {
 	    join.setVisible(false);
 	} else if (o == join.overCheckBtn) {
-//	    Main.network.services.
+	    logic.checkId(join.joinId.getText().trim());
 	} else if( o == join.joinConfirmBtn) {
-	    
+	    logic.joinUser(join);
 	}
-
     }
 
 }

@@ -54,6 +54,15 @@ public class Services {
 	clientHandlerThread.sendPacket(buffer.toString());
     }
 
+    public void checkId(String id) {
+	UserInfoDao dao = new UserInfoDao();
+	if (dao.checkId(id)) {
+	    clientHandlerThread.sendPacket(PacketInformation.Operation.JOIN, PacketInformation.PacketType.CHECK_USER_ID, 1);
+	} else {
+	    clientHandlerThread.sendPacket(PacketInformation.Operation.JOIN, PacketInformation.PacketType.CHECK_USER_ID, 0);
+	}
+    }
+
     public void loginUser(String data) {
 	String[] datas = data.split(",");
 
@@ -63,7 +72,7 @@ public class Services {
 	UserInfoDto dto = new UserInfoDto();
 	dto.setField(data);
 	UserInfoDao dao = new UserInfoDao();
-	
+
 	dao.insert(dto.getUserName(), dto.getUserId(), dto.getUserPw(), dto.getUserHp(), dto.getUserEmail());
     }
 

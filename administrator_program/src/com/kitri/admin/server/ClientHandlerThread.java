@@ -220,11 +220,13 @@ public class ClientHandlerThread extends Thread {
 
 	    break;
 	case PacketInformation.Operation.JOIN:
-	    
+	    joinRequest(packetType);
 	    break;
+	    
 	default:
 	}
     }
+    
     private void joinRequest(int packetType){
 	System.out.println("joinRequest()");
 	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
@@ -232,6 +234,9 @@ public class ClientHandlerThread extends Thread {
 	switch(packetType){
 	case PacketInformation.PacketType.USER_INFO:
 	    services.joinUser(data);
+	    break;
+	case PacketInformation.PacketType.CHECK_USER_ID:
+//	    services.
 	    break;
 	    default:
 	}

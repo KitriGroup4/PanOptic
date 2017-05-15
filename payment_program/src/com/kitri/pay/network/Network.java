@@ -119,7 +119,22 @@ public class Network implements Runnable {
 	case PacketInformation.Operation.COUNT:
 	    countPacket(packetType);
 	    break;
+	case PacketInformation.Operation.JOIN:
 
+	    break;
+	default:
+
+	}
+    }
+
+    private void joinResaponse(int packetType) {
+	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
+	
+	switch(packetType){
+	case PacketInformation.PacketType.CHECK_USER_ID:
+	    
+	    break;
+	    default:
 	}
     }
 

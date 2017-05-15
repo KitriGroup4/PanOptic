@@ -28,6 +28,14 @@ public class Services {
 		PacketInformation.IDLE);
     }
 
+    public void checkId(String data) {
+	if (data.equals("0")) {
+	    network.view.join.checkId = false;
+	    network.view.join.checkIdDialog();
+	} else {
+	    network.view.join.checkId = true;
+	}
+    }
 
     // public void setComPrepaidInfo(String data) {
     // System.out.println("setComPrepaidInfo()");
