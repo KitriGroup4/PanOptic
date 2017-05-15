@@ -10,31 +10,48 @@ import com.kitri.pay.network.PacketInformation;
 
 public class MainViewLogic {
 
+    private final byte MINUS = 0;
+    private final byte PLUS = 1;
+
     public MainViewLogic() {
-	
-	getComPrepaidInfo();
-	getPointInfo();
+
     }
 
-    public void getComPrepaidInfo() {
-	Main.network.sendPacket(PacketInformation.Operation.GET, PacketInformation.PacketType.COM_PREPAID_INFO, PacketInformation.IDLE);
+    public void setFalseButton(JLabel[] buttons, boolean[] isClick, int[] money, MainView view) {
+	int len = buttons.length;
+
+	for (int i = 0; i < len; i++) {
+	    buttons[i].setForeground(Color.BLACK);
+	    if (isClick[i]) {
+		updateMoney(MINUS, money[i], view);
+		isClick[i] = false;
+
+	    }
+
+	}
     }
 
-    public void getPointInfo() {
-	Main.network.sendPacket(PacketInformation.Operation.GET, PacketInformation.PacketType.POINT_INFO, PacketInformation.IDLE);
-    }
-
-    public boolean isClickButton(Object o, JLabel[] buttons, boolean[] isClick) {
+    public boolean isClickButton(Object o, JLabel[] buttons, boolean[] isClick, int[] money, MainView view) {
 	boolean result = false;
 	int len = buttons.length;
+
+	for (int i = 0; i < len; i++) {
+	    if (isClick[i]) {
+		updateMoney(MINUS, money[i], view);
+	    }
+	}
+
 	for (int i = 0; i < len; i++) {
 	    if (o == buttons[i]) {
 		if (isClick[i]) {
 		    isClick[i] = false;
 		    buttons[i].setForeground(Color.BLACK);
+		    updateMoney(MINUS, money[i], view);
+
 		} else {
 		    buttons[i].setForeground(Color.BLUE);
 
+		    updateMoney(PLUS, money[i], view);
 		    isClick[i] = true;
 		}
 
@@ -59,6 +76,7 @@ public class MainViewLogic {
 		switch (i) {
 		case 0: // 회원가입
 		    System.out.println("회원가입");
+		    view.join.setVisible(true);
 		    break;
 		case 1: // 포인트결제
 		case 2: // 카드 결제
@@ -72,6 +90,16 @@ public class MainViewLogic {
 	    }
 	}
 	return result;
+    }
+
+    private void updateMoney(byte type, int money, MainView m) {
+
+	if (type == MINUS) {
+	    m.setMoney(m.getMoney() - money);
+	} else {
+	    m.setMoney(m.getMoney() + money);
+	}
+
     }
 
     private void decisionPayType(int type, MainView view) {

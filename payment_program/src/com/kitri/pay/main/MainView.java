@@ -2,24 +2,28 @@ package com.kitri.pay.main;
 
 import java.awt.*;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JButton;
+
+import com.kitri.pay.join.UserJoin;
 
 public class MainView extends JFrame {
 
-    private final int TIME_COUNT = 8;
-    private final int POINT_COUNT = 5;
-    private final int FUNCTION_COUNT = 3;
+    public int TIME_COUNT = 8;
+    public int POINT_COUNT = 5;
+    public int FUNCTION_COUNT = 3;
 
+    public int[] timeMoney = {1000, 1200, 1500, 2000, 2500, 3000, 4000, 5000};
+    public int[] pointMoney = {1000, 2500, 4000, 7000, 10000};
     public String[] timeStr = { "1시간  1000원", "1시간 30분  1200원", "2시간  1500원", "2시간30분  2000원", "3시간  2500원",
 	    "4시간  3000원", "5시간  4000원", "7시간  5000원" };
     public String[] pointStr = { "1000P  1000원", "3000P  2500원", "5000P  4000원", "10000P  7000원", "15000P  10000원" };
     public String[] functionStr = { "회원가입", "포인트결제", "카드결제" };
     public boolean[] isClickTime;
     public boolean[] isClickPoint;
+
+    private int money;
+    
 
     public JLabel[] timeButton;
     public JLabel[] pointButton;
@@ -41,6 +45,11 @@ public class MainView extends JFrame {
 
     private MainViewListener listener;
     private JLabel moneyLabel;
+    
+    private static MainView view;
+    
+    public UserJoin join;
+    private JInternalFrame internalFrame;
     
 
     /**
@@ -64,6 +73,9 @@ public class MainView extends JFrame {
      */
     public MainView() {
 	
+	view = this;
+	money = 0;
+
 	isClickTime = new boolean[TIME_COUNT];
 	isClickPoint = new boolean[POINT_COUNT];
 
@@ -75,6 +87,10 @@ public class MainView extends JFrame {
 	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 	setContentPane(contentPane);
 	contentPane.setLayout(new BorderLayout(0, 0));
+	
+
+	join = new UserJoin();
+	contentPane.add(join);
 
 	mainPanel = new JPanel();
 	contentPane.add(mainPanel, BorderLayout.CENTER);
@@ -121,12 +137,12 @@ public class MainView extends JFrame {
 	mainPanel.add(functionPanel);
 	functionPanel.setLayout(new GridLayout(4, 1, 20, 20));
 
-	moneyLabel = new JLabel("New label");
+	moneyLabel = new JLabel(money + "원");
 	moneyLabel.setHorizontalAlignment(JLabel.CENTER);
 	moneyLabel.setVerticalAlignment(JLabel.CENTER);
 	moneyLabel.setFont(new Font("default", Font.BOLD, 40));
 	functionPanel.add(moneyLabel);
-	
+
 	functionButton = new JButton[FUNCTION_COUNT];
 	for (int i = 0; i < FUNCTION_COUNT; i++) {
 	    functionButton[i] = new JButton(functionStr[i]);
@@ -148,6 +164,7 @@ public class MainView extends JFrame {
 	GraphicsDevice device = environment.getDefaultScreenDevice();
 	this.setUndecorated(true);
 	device.setFullScreenWindow(this);
+	
 
 	// if (device.isDisplayChangeSupported()) {
 	// // refreshRate값은 따로 찾아 봐야함
@@ -169,6 +186,24 @@ public class MainView extends JFrame {
 	    panel.add(label[i]);
 	}
 
+    }
+
+    public int getMoney() {
+	return money;
+    }
+
+    public void setMoney(int money) {
+	this.money = money;
+
+	if (this.money < 0) {
+	    this.money = 0;
+	}
+
+	moneyLabel.setText(this.money + "원");
+    }
+    
+    public static MainView getInstance(){
+	return view;
     }
 
 }

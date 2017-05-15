@@ -1,5 +1,7 @@
 package com.kitri.admin.database.dto;
 
+import java.util.StringTokenizer;
+
 public class UserInfoDto {
     private int userNum;
     private String userName;
@@ -81,6 +83,43 @@ public class UserInfoDto {
 
     public void setUserJoinDate(String userJoinDate) {
 	this.userJoinDate = userJoinDate;
+    }
+    
+    public void setField(String data) {
+	StringTokenizer fieldToken = new StringTokenizer(data, ",");
+
+	int i = 1;
+	String temp;
+	while (fieldToken.hasMoreTokens()) {
+	    temp = fieldToken.nextToken();
+	    switch (i++) {
+	    case 1:
+		userName = temp;
+		break;
+	    case 2:
+		userId = temp;
+		break;
+	    case 3:
+		userPw = temp;
+		break;
+	    case 4:
+		userHp = temp;
+		break;
+	    case 5:
+		userEmail = temp;
+		break;
+	    case 6:
+		userAccuTime = temp;
+		break;
+	    case 7:
+		userLeftTime = temp;
+		break;
+	    case 8:
+		userJoinDate = temp;
+		break;
+	    default:
+	    }
+	}
     }
     
     @Override

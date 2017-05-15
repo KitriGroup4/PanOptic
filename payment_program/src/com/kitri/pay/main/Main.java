@@ -13,10 +13,10 @@ public class Main {
 	    public void run() {
 		try {
 		    network = new Network();
-		    thread = new Thread(network);
-		    thread.start();
-		    MainView frame = new MainView();
-		    frame.setVisible(true);
+//		    thread = new Thread(network);
+//		    thread.start();
+//		    MainView frame = new MainView();
+//		    frame.setVisible(true);
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}

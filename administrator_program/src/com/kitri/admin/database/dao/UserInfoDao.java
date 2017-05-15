@@ -1,18 +1,15 @@
 package com.kitri.admin.database.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 import com.kitri.admin.database.dto.UserInfoDto;
 
 public class UserInfoDao extends Dao {
-//    private Dao dao;
+    // private Dao dao;
 
     public UserInfoDao() {
-	
+
     }
 
     public ArrayList<UserInfoDto> selectAll() {
@@ -52,19 +49,18 @@ public class UserInfoDao extends Dao {
 	return dtos;
     }
 
-    public boolean insert(int num, String name, String id, String pw, String hp, String email) {
+    public boolean insert(String name, String id, String pw, String hp, String email) {
 	int result = 0;
 
 	try {
 	    con = getConnection();
 	    preStmt = con.prepareStatement(
-		    "insert into user_info(user_num, user_name, user_id, user_pw, user_hp, user_email) values(?,?,?,?,?,?)");
-	    preStmt.setInt(1, num);
-	    preStmt.setString(2, name);
-	    preStmt.setString(3, id);
-	    preStmt.setString(4, pw);
-	    preStmt.setString(5, hp);
-	    preStmt.setString(6, email);
+		    "insert into user_info(user_num, user_name, user_id, user_pw, user_hp, user_email) values(user_info_seq.nextval,?,?,?,?,?)");
+	    preStmt.setString(1, name);
+	    preStmt.setString(2, id);
+	    preStmt.setString(3, pw);
+	    preStmt.setString(4, hp);
+	    preStmt.setString(5, email);
 	    result = preStmt.executeUpdate();
 
 	} catch (Exception e) {
@@ -77,17 +73,43 @@ public class UserInfoDao extends Dao {
 
     }
 
-//    public static void main(String[] args) {
-//	UserInfoDao u = new UserInfoDao();
-//
-//	ArrayList<UserInfoDto> dtos = u.selectAllUserInfo();
-////	System.out.println(u.insertUserInfo(4, "321312231", "32332", "32w2ew", "32we2432", "qweq5wr@qwqwe"));
-//
-//	int size = dtos.size();
-//	for (int i = 0; i < size; i++) {
-//	    System.out.println(dtos.get(i).toString());
-//	}
-//
-//    }
+    public boolean checkId(String id) {
+	boolean result = false;
+
+	try {
+	    con = getConnection();
+	    preStmt = con.prepareStatement("select user_id from user_info where user_id = ?");
+	    preStmt.setString(1, id);
+	    rs = preStmt.executeQuery();
+
+	    if (!rs.next()) {
+		result = true;
+	    }
+
+	} catch (SQLException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} finally {
+	    resetPreStmt();
+	}
+	
+	return result;
+    }
+
+   
+
+    // public static void main(String[] args) {
+    // UserInfoDao u = new UserInfoDao();
+    //
+    // ArrayList<UserInfoDto> dtos = u.selectAllUserInfo();
+    //// System.out.println(u.insertUserInfo(4, "321312231", "32332", "32w2ew",
+    // "32we2432", "qweq5wr@qwqwe"));
+    //
+    // int size = dtos.size();
+    // for (int i = 0; i < size; i++) {
+    // System.out.println(dtos.get(i).toString());
+    // }
+    //
+    // }
 
 }

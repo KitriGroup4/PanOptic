@@ -1,4 +1,4 @@
-package com.kitri.user.mainframe;
+package com.kitri.user.login;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -10,7 +10,7 @@ import java.awt.*;
 
 import javax.swing.JButton;
 
-public class UserMain extends JFrame {
+public class UserLogin extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField pwTf;
@@ -54,7 +54,7 @@ public class UserMain extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UserMain frame = new UserMain();
+					UserLogin frame = new UserLogin();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -66,7 +66,7 @@ public class UserMain extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public UserMain() {
+	public UserLogin() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 556, 445);
 		contentPane = new JPanel();

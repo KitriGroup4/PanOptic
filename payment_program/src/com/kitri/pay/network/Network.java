@@ -4,7 +4,10 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.StringTokenizer;
+
+import com.kitri.pay.main.MainView;
 
 public class Network implements Runnable {
     private final int SOCKET_TIMEOUT = 3000;
@@ -19,28 +22,38 @@ public class Network implements Runnable {
 
     private String[] dataPacket;
 
+    public Services services;
+    public MainView view;
+
+    public Network() {
+	view = new MainView();
+
+	Thread thread = new Thread(this);
+	thread.start();
+    }
+
     @Override
     public void run() {
 	byte[] byteBuffer = new byte[500];
 	isRunnable = true;
 	int len = 0;
-	String packet;
+	String packets;
 
 	try {
 	    socket = new Socket();
 	    socket.connect(new InetSocketAddress(IP, PORT), SOCKET_TIMEOUT);
 	    buffReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "EUC-KR"));
-	    // reader = new BufferedInputStream(socket.getInputStream());
-	    // writer = new PrintWriter(new BufferedWriter(new
-	    // OutputStreamWriter(socket.getOutputStream())));
 	    writer = new PrintWriter(socket.getOutputStream(), true);
 
+	    services = new Services(this);
 	    while (isRunnable) {
 		// len = reader.read(byteBuffer);
 
-		packet = buffReader.readLine();
+		packets = buffReader.readLine();
 
-		packet = null;
+		divisionPacket(packets);
+
+		packets = null;
 	    }
 	} catch (UnknownHostException e) {
 	    e.printStackTrace();
@@ -79,9 +92,9 @@ public class Network implements Runnable {
 	    dataPacket = new String[PacketInformation.PACKET_SIZE];
 	    i = 0;
 	    while (unitToken.hasMoreTokens()) {
-		dataPacket[i] = unitToken.nextToken();
+		dataPacket[i++] = unitToken.nextToken();
 	    }
-
+	    System.out.println(Arrays.toString(dataPacket));
 	    dicisionProgram();
 	}
     }
@@ -103,19 +116,33 @@ public class Network implements Runnable {
 	case PacketInformation.Operation.GET:
 
 	    break;
+	case PacketInformation.Operation.COUNT:
+	    countPacket(packetType);
+	    break;
+
+	}
+    }
+
+    private void countPacket(int packetType) {
+	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
+	int intData = Integer.parseInt(data);
+
+	switch (packetType) {
+	case PacketInformation.PacketType.COM_PREPAID_INFO:
+	    break;
+	case PacketInformation.PacketType.POINT_INFO:
+	    break;
 
 	}
     }
 
     private void responsePacket(int packetType) {
 	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
-	
-	switch(packetType){
+
+	switch (packetType) {
 	case PacketInformation.PacketType.COM_PREPAID_INFO:
-	    
 	    break;
 	case PacketInformation.PacketType.POINT_INFO:
-	    
 	    break;
 	}
     }
@@ -162,6 +189,7 @@ public class Network implements Runnable {
 	buff.append(data);
 	buff.append("!");
 
+	System.out.println(buff.toString());
 	writer.println(buff.toString());
     }
 

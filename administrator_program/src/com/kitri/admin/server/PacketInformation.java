@@ -24,11 +24,15 @@ public class PacketInformation {
     public static class Operation{
 	public static final byte GET = 0;
 	public static final byte RESPONSE = 1;
+	public static final byte COUNT = 2;
+	public static final byte LOGIN = 3;
+	public static final byte JOIN = 4;
     }
 
     public static class PacketType {
 	public static final byte POINT_INFO = 0;
 	public static final byte COM_PREPAID_INFO = 1;
+	public static final byte USER_INFO = 2;
     }
     
     public static class ComPrepaidInfo{

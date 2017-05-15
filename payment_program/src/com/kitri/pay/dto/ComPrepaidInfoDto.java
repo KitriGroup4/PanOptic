@@ -1,5 +1,7 @@
 package com.kitri.pay.dto;
 
+import java.util.StringTokenizer;
+
 public class ComPrepaidInfoDto {
     private int prepaidNum;
     private float prepaidTime;
@@ -27,6 +29,28 @@ public class ComPrepaidInfoDto {
 
     public void setPrepaidPrice(int prepaidPrice) {
 	this.prepaidPrice = prepaidPrice;
+    }
+
+    public void setField(String data) {
+	StringTokenizer fieldToken = new StringTokenizer(data, ",");
+	
+	int i = 0;
+	String temp;
+	while(fieldToken.hasMoreTokens()){
+	    temp = fieldToken.nextToken();
+	    switch(i++){
+	    case 0:
+		prepaidNum = Integer.parseInt(temp);
+		break;
+	    case 1:
+		prepaidTime = Float.parseFloat(temp);
+		break;
+	    case 2:
+		prepaidPrice = Integer.parseInt(temp);
+		break;
+		default:
+	    }
+	}
     }
 
     @Override

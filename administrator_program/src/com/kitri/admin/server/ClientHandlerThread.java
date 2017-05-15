@@ -37,7 +37,7 @@ public class ClientHandlerThread extends Thread {
 
     public StringBuilder tempRecv;
 
-    public int programValue;
+    public int clientProgramValue;
 
     public ClientHandlerThread(Abortable abortable, SocketChannel client, Selector selector, ServerThread serverThread,
 	    int handlerCount) {
@@ -64,15 +64,10 @@ public class ClientHandlerThread extends Thread {
 	try {
 
 	    System.out.println("Client :: started");
-	    // Server.addLog("Client :: started");
-
 	    client.configureBlocking(false);
 	    selector = Selector.open();
 
 	    client.register(selector, socketOptions);
-
-	    // send welcome message
-	    // client.write(ByteBuffer.wrap(new String("Welcome").getBytes()));
 
 	    ByteBuffer buffer = ByteBuffer.allocate(4096);
 
@@ -91,8 +86,6 @@ public class ClientHandlerThread extends Thread {
 			    client.finishConnect();
 			}
 		    } else if (selected.isReadable()) {
-			// buffer = null;
-
 			int len = client.read(buffer);
 
 			if (len < 0) {
@@ -103,7 +96,6 @@ public class ClientHandlerThread extends Thread {
 			if (buffer.position() != 0) {
 			    buffer.flip();
 			    recvData = cs.decode(buffer);
-			    System.out.print(recvData.toString());
 			    conbinePacket(recvData.toString());
 			}
 
@@ -112,7 +104,6 @@ public class ClientHandlerThread extends Thread {
 			}
 		    }
 		}
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	    }
 
@@ -141,7 +132,6 @@ public class ClientHandlerThread extends Thread {
     }
 
     void conbinePacket(String message) {
-	System.out.print(message);
 	StringTokenizer lineToken = new StringTokenizer(message, "\n");
 	StringBuilder tempPacket = new StringBuilder("");
 	String part;
@@ -152,7 +142,7 @@ public class ClientHandlerThread extends Thread {
 
 	while (lineToken.hasMoreTokens()) {
 	    part = lineToken.nextToken().trim();
-	    
+
 	    System.out.print(part);
 	    partLen = part.length() - 1;
 	    if (part.indexOf(PATTERN) == -1) {
@@ -186,7 +176,6 @@ public class ClientHandlerThread extends Thread {
 
 	    }
 	}
-
     }
 
     void divisionPacket(String message) {
@@ -200,21 +189,21 @@ public class ClientHandlerThread extends Thread {
 
 	programValue = Integer.parseInt(dataPacket[PacketInformation.PacketStructrue.PROGRAM_VALUE]);
 	operator = Integer.parseInt(dataPacket[PacketInformation.PacketStructrue.OPERATOR]);
-	
+
 	switch (programValue) {
 	case PacketInformation.ProgramValue.USER:
-	    programValue = PacketInformation.ProgramValue.USER;
+	    clientProgramValue = PacketInformation.ProgramValue.USER;
 	    break;
 	case PacketInformation.ProgramValue.PAYMENT:
-	    programValue = PacketInformation.ProgramValue.PAYMENT;
+	    clientProgramValue = PacketInformation.ProgramValue.PAYMENT;
 	    break;
 	case PacketInformation.ProgramValue.ADMIN:
-	    programValue = PacketInformation.ProgramValue.ADMIN;
+	    clientProgramValue = PacketInformation.ProgramValue.ADMIN;
 	    break;
 	default:
 	    return;
 	}
-	
+
 	dicisionOperator(operator);
 
     }
@@ -227,7 +216,36 @@ public class ClientHandlerThread extends Thread {
 	case PacketInformation.Operation.GET:
 	    getRequest(packetType);
 	    break;
+	case PacketInformation.Operation.LOGIN:
+
+	    break;
+	case PacketInformation.Operation.JOIN:
+	    
+	    break;
 	default:
+	}
+    }
+    private void joinRequest(int packetType){
+	System.out.println("joinRequest()");
+	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
+	
+	switch(packetType){
+	case PacketInformation.PacketType.USER_INFO:
+	    services.joinUser(data);
+	    break;
+	    default:
+	}
+    }
+
+    private void loginRequest(int packetType) {
+	System.out.println("loginRequest()");
+	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
+	
+	switch(packetType){
+	case PacketInformation.PacketType.USER_INFO:
+	    services.loginUser(data);
+	    break;
+	    default:
 	}
     }
 
@@ -240,30 +258,13 @@ public class ClientHandlerThread extends Thread {
 	    services.getComPrepaidInfo();
 	    break;
 	case PacketInformation.PacketType.POINT_INFO:
-
+	    services.getPointInfo();
 	    break;
 	default:
 	}
     }
 
     private void paymentComPrepaidInfo(String data) {
-
-    }
-
-    void analysisPacket() {
-	// divisionData(message);
-	// int situation =
-	// compareSituation(dataPacket[Packet.SITUATION.getDataNum()]);
-	int programValue;
-	int packetType;
-
-	try {
-	    programValue = Integer.parseInt(dataPacket[PacketInformation.PacketStructrue.PROGRAM_VALUE]);
-	    packetType = Integer.parseInt(dataPacket[PacketInformation.PacketStructrue.PACKET_TYPE]);
-
-	} catch (Exception e) {
-	    System.out.println("ananlysis error : " + e.toString());
-	}
 
     }
 
@@ -291,6 +292,24 @@ public class ClientHandlerThread extends Thread {
 	StringBuilder buff = new StringBuilder("");
 
 	buff.append(programValue);
+	buff.append("/");
+	buff.append(operator);
+	buff.append("/");
+	buff.append(packetType);
+	buff.append("/");
+	buff.append(data);
+	buff.append("!");
+	try {
+	    client.write(ByteBuffer.wrap(buff.toString().getBytes()));
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+    }
+
+    public void sendPacket(int operator, int packetType, int data) {
+	StringBuilder buff = new StringBuilder("");
+
+	buff.append(PacketInformation.ProgramValue.PAYMENT);
 	buff.append("/");
 	buff.append(operator);
 	buff.append("/");
@@ -344,17 +363,16 @@ public class ClientHandlerThread extends Thread {
 
     public void sendPacket(String packet) {
 	try {
+
 	    System.out.println(packet);
 	    packet += "\n";
 	    client.write(ByteBuffer.wrap(packet.getBytes()));
-	    
+
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
 
     }
-
-   
 
     public void deleteThreadSocket() {
 	serverThread.socketList.remove(myCount);

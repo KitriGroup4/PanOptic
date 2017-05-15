@@ -17,12 +17,14 @@ public class MainViewListener extends MouseAdapter implements ActionListener {
 	super.mouseClicked(e);
 	System.out.println(view.timeButton.length);
 	Object o = e.getSource();
-	if (logic.isClickButton(o, view.timeButton, view.isClickTime)) {
+	
+	if (logic.isClickButton(o, view.timeButton, view.isClickTime, view.timeMoney, view)) {
+	    logic.setFalseButton(view.pointButton, view.isClickPoint, view.pointMoney, view);
 	    System.out.println("time");
-	} else if (logic.isClickButton(o, view.pointButton, view.isClickPoint)) {
+	} else if (logic.isClickButton(o, view.pointButton, view.isClickPoint, view.pointMoney, view)) {
+	    logic.setFalseButton(view.timeButton, view.isClickTime, view.timeMoney, view);
 	    System.out.println("point");
 	}
-
     }
 
     @Override
