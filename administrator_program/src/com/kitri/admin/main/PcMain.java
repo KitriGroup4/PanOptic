@@ -4,13 +4,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.kitri.admin.main.control.ControlJP;
-import com.kitri.admin.main.customer.CustomerJP;
-import com.kitri.admin.main.employee.EmployeeJP;
-import com.kitri.admin.main.leftover.LeftOverJP;
-import com.kitri.admin.main.management.ManagementJP;
-import com.kitri.admin.main.stat.StatJP;
-import com.kitri.admin.main.store.StoreJP;
+import com.kitri.admin.main.controlPanel.ControlPanel;
+import com.kitri.admin.main.customerPanel.CustomerJP;
+import com.kitri.admin.main.employeePanel.EmployeeJP;
+import com.kitri.admin.main.fixCon.Fix;
+import com.kitri.admin.main.leftoverPanel.LeftOverJP;
+import com.kitri.admin.main.managementPanel.ManagementJP;
+import com.kitri.admin.main.statPanel.StatJP;
+import com.kitri.admin.main.storePanel.StoreJP;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -49,25 +50,25 @@ public class PcMain extends JFrame {
 	LeftOverJP leftOverJPanel = new LeftOverJP();
 	EmployeeJP employeeJPanel = new EmployeeJP();
 	StatJP statJPanel = new StatJP();
-	ControlJP controlJPanel = new ControlJP();
+	ControlPanel controlJPanel = new ControlPanel();
 	ManagementJP managementJPanel = new ManagementJP();
 	
 //////////////////////////////////////////////////////////////	
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PcMain frame = new PcMain();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					PcMain frame = new PcMain();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
@@ -112,17 +113,17 @@ public class PcMain extends JFrame {
 		}
 		
 		
-//		left.add(cardPanel);
 		cardPanel.setLayout(cl);
 		
 		cardPanel.add(storeJPanel, topMenuTitle[0]);
-//		cardPanel.add(store, "1");
 		cardPanel.add(customerJPanel, topMenuTitle[1]);
 		cardPanel.add(leftOverJPanel, topMenuTitle[2]);
 		cardPanel.add(employeeJPanel, topMenuTitle[3]);
 		cardPanel.add(statJPanel, topMenuTitle[4]);
 		cardPanel.add(controlJPanel, topMenuTitle[5]);
 		cardPanel.add(managementJPanel, topMenuTitle[6]);
+		
+		Fix.FIXFRAME(this);
 		
 		topMenuButton[0].addActionListener(new ActionListener() {
 

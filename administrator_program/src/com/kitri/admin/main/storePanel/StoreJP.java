@@ -1,4 +1,4 @@
-package com.kitri.admin.main.store;
+package com.kitri.admin.main.storePanel;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;
