@@ -49,10 +49,11 @@ public class MainView extends JFrame {
 
     private static MainView view;
 
-    public UserJoin join;
+    public UserJoin join; // internal
     public UserLogin login;
     public PaymentView payment;
     private JInternalFrame internalFrame;
+    public JTextArea ta;
     
 
     /**
@@ -76,6 +77,8 @@ public class MainView extends JFrame {
      */
     public MainView() {
 
+	ta = new JTextArea();
+	
 	view = this;
 	money = 0;
 

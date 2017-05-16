@@ -9,7 +9,6 @@ public class UserJoinLogic {
     public void checkId(String id) {
 	if(!id.isEmpty() && !id.equals("")){	
 	    Main.network.sendPacket(PacketInformation.Operation.JOIN, PacketInformation.PacketType.CHECK_USER_ID, id);
-	 
 	}
    }
 

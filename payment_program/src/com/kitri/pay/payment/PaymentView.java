@@ -23,6 +23,7 @@ public class PaymentView extends JInternalFrame {
     private PaymentViewListener listener;
     public boolean isPoint;
     public int price;
+    public int index;
 
     /**
      * Launch the application.

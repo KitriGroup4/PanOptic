@@ -52,7 +52,7 @@ public class MainViewLogic {
 
 		} else {
 		    buttons[i].setForeground(Color.BLUE);
-
+		    view.payment.index = i;
 		    updateMoney(PLUS, money[i], view);
 		    isClick[i] = true;
 		}

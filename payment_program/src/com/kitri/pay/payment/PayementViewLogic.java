@@ -14,9 +14,9 @@ public class PayementViewLogic {
 	if (view.draw.points.size() > 0) {
 	    if (view.isPoint) {
 		Main.network.sendPacket(PacketInformation.Operation.BUY, PacketInformation.PacketType.POINT,
-			view.price);
+			view.index + "," + view.price);
 	    } else {
-		Main.network.sendPacket(PacketInformation.Operation.BUY, PacketInformation.PacketType.TIME, view.price);
+		Main.network.sendPacket(PacketInformation.Operation.BUY, PacketInformation.PacketType.TIME, view.index + "," + view.price);
 	    }
 	}
 
