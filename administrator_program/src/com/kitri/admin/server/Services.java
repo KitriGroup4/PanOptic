@@ -55,26 +55,69 @@ public class Services {
     }
 
     public void checkId(String id) {
+	System.out.println("checkId()");
 	UserInfoDao dao = new UserInfoDao();
-	if (dao.checkId(id)) {
-	    clientHandlerThread.sendPacket(PacketInformation.Operation.JOIN, PacketInformation.PacketType.CHECK_USER_ID, 1);
+	if (dao.checkId(id).isEmpty()) {
+	    clientHandlerThread.sendPacket(PacketInformation.Operation.JOIN, PacketInformation.PacketType.CHECK_USER_ID,
+		    1);
 	} else {
-	    clientHandlerThread.sendPacket(PacketInformation.Operation.JOIN, PacketInformation.PacketType.CHECK_USER_ID, 0);
+	    clientHandlerThread.sendPacket(PacketInformation.Operation.JOIN, PacketInformation.PacketType.CHECK_USER_ID,
+		    0);
 	}
     }
 
     public void loginUser(String data) {
 	String[] datas = data.split(",");
+	String id = datas[0];
+	String pw = datas[1];
+	String pwCheck;
+	UserInfoDao dao = new UserInfoDao();
+
+	if ((pwCheck = dao.checkId(id)).isEmpty()) {
+	    clientHandlerThread.sendPacket(PacketInformation.Operation.LOGIN, PacketInformation.PacketType.IS_FAIL,
+		    PacketInformation.IDLE);
+	} else {
+	    if (pwCheck.equals(pw)) {
+		clientHandlerThread.sendPacket(PacketInformation.Operation.LOGIN, PacketInformation.PacketType.IS_OK,
+			PacketInformation.IDLE);
+	    } else {
+		clientHandlerThread.sendPacket(PacketInformation.Operation.LOGIN, PacketInformation.PacketType.IS_FAIL,
+			PacketInformation.IDLE);
+	    }
+	}
 
     }
 
     public void joinUser(String data) {
+	System.out.println("joinUser()");
 	UserInfoDto dto = new UserInfoDto();
-	dto.setField(data);
+	dto.setFieldToInsert(data);
 	UserInfoDao dao = new UserInfoDao();
 
-	dao.insert(dto.getUserName(), dto.getUserId(), dto.getUserPw(), dto.getUserHp(), dto.getUserEmail());
+	if (dao.insert(dto)) {
+	    clientHandlerThread.sendPacket(PacketInformation.Operation.JOIN, PacketInformation.PacketType.IS_OK,
+		    PacketInformation.IDLE);
+	} else {
+	    clientHandlerThread.sendPacket(PacketInformation.Operation.JOIN, PacketInformation.PacketType.IS_FAIL,
+		    PacketInformation.IDLE);
+	}
     }
+
+    public void buyPoint(String data) {
+	System.out.println("buyPoint()");
+	
+	clientHandlerThread.sendPacket(PacketInformation.Operation.BUY, PacketInformation.PacketType.IS_OK, PacketInformation.IDLE);
+	
+    }
+    
+    public void buyTime(String data) {
+	System.out.println("buyTime()");
+	
+
+	clientHandlerThread.sendPacket(PacketInformation.Operation.BUY, PacketInformation.PacketType.IS_OK, PacketInformation.IDLE);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public String getPacketFormat(int programValue, int operator, int packetType, String data) {
 	StringBuilder buff = new StringBuilder("");

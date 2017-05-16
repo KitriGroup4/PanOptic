@@ -13,11 +13,13 @@ public class MainViewLogic {
     private final byte MINUS = 0;
     private final byte PLUS = 1;
 
-    public MainViewLogic() {
+    private MainView view;
 
+    public MainViewLogic(MainView view) {
+	this.view = view;
     }
 
-    public void setFalseButton(JLabel[] buttons, boolean[] isClick, int[] money, MainView view) {
+    public void setFalseButton(JLabel[] buttons, boolean[] isClick, int[] money) {
 	int len = buttons.length;
 
 	for (int i = 0; i < len; i++) {
@@ -31,7 +33,7 @@ public class MainViewLogic {
 	}
     }
 
-    public boolean isClickButton(Object o, JLabel[] buttons, boolean[] isClick, int[] money, MainView view) {
+    public boolean isClickButton(Object o, JLabel[] buttons, boolean[] isClick, int[] money) {
 	boolean result = false;
 	int len = buttons.length;
 
@@ -65,7 +67,7 @@ public class MainViewLogic {
 	return result;
     }
 
-    public boolean isClickButton(Object o, JButton[] buttons, MainView view) {
+    public boolean isClickButton(Object o, JButton[] buttons) {
 	boolean result = false;
 	int len = buttons.length;
 
@@ -80,9 +82,9 @@ public class MainViewLogic {
 		    break;
 		case 1: // 포인트결제
 		case 2: // 카드 결제
-		    // if (isSelected(view.isClickTime, view.isClickPoint)) {
-		    // System.out.println("카드 결제");
-		    // }
+		    if (isSelected()) {
+			view.login.setVisible(true);
+		    }
 		    break;
 		default:
 		}
@@ -91,6 +93,7 @@ public class MainViewLogic {
 	}
 	return result;
     }
+
 
     private void updateMoney(byte type, int money, MainView m) {
 
@@ -106,16 +109,29 @@ public class MainViewLogic {
 
     }
 
-    private boolean isSelected(boolean[] is) {
+    private boolean isSelected() {
 	boolean result = false;
 
-	int len = is.length;
+	int len = view.isClickTime.length;
 	for (int i = 0; i < len; i++) {
-	    if (is[i]) {
+	    if (view.isClickTime[i]) {
 		result = true;
+		view.payment.isPoint = false;
 		break;
 	    }
 	}
+
+	if (!result) {
+	    len = view.isClickPoint.length;
+	    for (int i = 0; i < len; i++) {
+		if (view.isClickPoint[i]) {
+		    result = true;
+		    view.payment.isPoint = true;
+		    break;
+		}
+	    }
+	}
+
 	return result;
     }
 

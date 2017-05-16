@@ -9,7 +9,7 @@ public class MainViewListener extends MouseAdapter implements ActionListener {
 
     public MainViewListener(MainView view) {
 	this.view = view;
-	logic = new MainViewLogic();
+	logic = new MainViewLogic(view);
     }
 
     @Override
@@ -18,11 +18,11 @@ public class MainViewListener extends MouseAdapter implements ActionListener {
 	System.out.println(view.timeButton.length);
 	Object o = e.getSource();
 	
-	if (logic.isClickButton(o, view.timeButton, view.isClickTime, view.timeMoney, view)) {
-	    logic.setFalseButton(view.pointButton, view.isClickPoint, view.pointMoney, view);
+	if (logic.isClickButton(o, view.timeButton, view.isClickTime, view.timeMoney)) {
+	    logic.setFalseButton(view.pointButton, view.isClickPoint, view.pointMoney);
 	    System.out.println("time");
-	} else if (logic.isClickButton(o, view.pointButton, view.isClickPoint, view.pointMoney, view)) {
-	    logic.setFalseButton(view.timeButton, view.isClickTime, view.timeMoney, view);
+	} else if (logic.isClickButton(o, view.pointButton, view.isClickPoint, view.pointMoney)) {
+	    logic.setFalseButton(view.timeButton, view.isClickTime, view.timeMoney);
 	    System.out.println("point");
 	}
     }
@@ -30,7 +30,7 @@ public class MainViewListener extends MouseAdapter implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 	Object o = e.getSource();
-	logic.isClickButton(o, view.functionButton, view);
+	logic.isClickButton(o, view.functionButton);
 	
     }
 

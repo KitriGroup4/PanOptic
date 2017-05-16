@@ -49,18 +49,20 @@ public class UserInfoDao extends Dao {
 	return dtos;
     }
 
-    public boolean insert(String name, String id, String pw, String hp, String email) {
+    public boolean insert(String name, String id, String pw, String hp, String email, String birth, String isMale) {
 	int result = 0;
 
 	try {
 	    con = getConnection();
 	    preStmt = con.prepareStatement(
-		    "insert into user_info(user_num, user_name, user_id, user_pw, user_hp, user_email) values(user_info_seq.nextval,?,?,?,?,?)");
+		    "insert into user_info(user_num, user_name, user_id, user_pw, user_hp, user_email, user_birth, is_male) values(user_info_seq.nextval,?,?,?,?,?,?,?)");
 	    preStmt.setString(1, name);
 	    preStmt.setString(2, id);
 	    preStmt.setString(3, pw);
 	    preStmt.setString(4, hp);
 	    preStmt.setString(5, email);
+	    preStmt.setString(6, birth);
+	    preStmt.setString(7, isMale);
 	    result = preStmt.executeUpdate();
 
 	} catch (Exception e) {
@@ -73,17 +75,45 @@ public class UserInfoDao extends Dao {
 
     }
 
-    public boolean checkId(String id) {
-	boolean result = false;
+    public boolean insert(UserInfoDto dto) {
+	int result = 0;
+	System.out.println("insert(dto)");
+	System.out.println(dto.toString());
+	try {
+	    con = getConnection();
+	    preStmt = con.prepareStatement(
+		    "insert into user_info(user_num, user_name, user_id, user_pw, user_hp, user_email, user_birth, is_male) values(user_info_seq.nextval,?,?,?,?,?,?,?)");
+	    preStmt.setString(1, dto.getUserName());
+	    preStmt.setString(2, dto.getUserId());
+	    preStmt.setString(3, dto.getUserPw());
+	    preStmt.setString(4, dto.getUserHp());
+	    preStmt.setString(5, dto.getUserEmail());
+	    preStmt.setString(6, dto.getUserBirth());
+	    preStmt.setString(7, dto.getIsMale());
+	    result = preStmt.executeUpdate();
+
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    System.out.println(e.toString());
+	} finally {
+	    resetPreStmt();
+	}
+
+	return result == 0 ? false : true;
+
+    }
+
+    public String checkId(String id) {
+	String result = "";
 
 	try {
 	    con = getConnection();
-	    preStmt = con.prepareStatement("select user_id from user_info where user_id = ?");
+	    preStmt = con.prepareStatement("select user_pw from user_info where user_id = ?");
 	    preStmt.setString(1, id);
 	    rs = preStmt.executeQuery();
 
-	    if (!rs.next()) {
-		result = true;
+	    if (rs.next()) {
+		result = rs.getString(1);
 	    }
 
 	} catch (SQLException e) {
@@ -92,11 +122,9 @@ public class UserInfoDao extends Dao {
 	} finally {
 	    resetPreStmt();
 	}
-	
+
 	return result;
     }
-
-   
 
     // public static void main(String[] args) {
     // UserInfoDao u = new UserInfoDao();

@@ -50,7 +50,7 @@ public class Network implements Runnable {
 		// len = reader.read(byteBuffer);
 
 		packets = buffReader.readLine();
-
+		System.out.println("rcv : " + packets);
 		divisionPacket(packets);
 
 		packets = null;
@@ -108,7 +108,7 @@ public class Network implements Runnable {
 
     private void dicisionOperator(int operator) {
 	int packetType = Integer.parseInt(dataPacket[PacketInformation.PacketStructrue.PACKET_TYPE]);
-
+	System.out.println("dicisionOperator()");
 	switch (operator) {
 	case PacketInformation.Operation.RESPONSE:
 	    responsePacket(packetType);
@@ -120,21 +120,59 @@ public class Network implements Runnable {
 	    countPacket(packetType);
 	    break;
 	case PacketInformation.Operation.JOIN:
-
+	    joinResaponse(packetType);
+	case PacketInformation.Operation.LOGIN:
+	    loginResponse(packetType);
+	    break;
+	case PacketInformation.Operation.BUY:
+	    buyResponse(packetType);
 	    break;
 	default:
 
 	}
     }
 
-    private void joinResaponse(int packetType) {
+    private void buyResponse(int packetType) {
 	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
-	
-	switch(packetType){
-	case PacketInformation.PacketType.CHECK_USER_ID:
+
+	switch (packetType) {
+	case PacketInformation.PacketType.IS_OK:
+	    view.payment.setVisible(false);
+	    break;
+	case PacketInformation.PacketType.IS_FAIL:
 	    
 	    break;
 	    default:
+	}
+    }
+
+    private void loginResponse(int packetType) {
+	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
+	switch (packetType) {
+	case PacketInformation.PacketType.IS_OK:
+	    services.loginSuccess();
+	    break;
+	case PacketInformation.PacketType.IS_FAIL:
+	    view.login.loginFailDialog();
+	    break;
+	}
+    }
+
+    private void joinResaponse(int packetType) {
+	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
+
+	switch (packetType) {
+	case PacketInformation.PacketType.CHECK_USER_ID:
+	    services.checkId(data);
+	    break;
+	case PacketInformation.PacketType.IS_OK:
+	    view.joinSuccess();
+	    view.join.setVisible(false);
+	    break;
+	case PacketInformation.PacketType.IS_FAIL:
+	    view.join.joinFailDialog();
+	    break;
+	default:
 	}
     }
 
@@ -193,6 +231,22 @@ public class Network implements Runnable {
     }
 
     public void sendPacket(int operator, int packetType, byte data) {
+	StringBuilder buff = new StringBuilder("");
+
+	buff.append(PacketInformation.ProgramValue.PAYMENT);
+	buff.append("/");
+	buff.append(operator);
+	buff.append("/");
+	buff.append(packetType);
+	buff.append("/");
+	buff.append(data);
+	buff.append("!");
+
+	System.out.println(buff.toString());
+	writer.println(buff.toString());
+    }
+
+    public void sendPacket(int operator, int packetType, int data) {
 	StringBuilder buff = new StringBuilder("");
 
 	buff.append(PacketInformation.ProgramValue.PAYMENT);

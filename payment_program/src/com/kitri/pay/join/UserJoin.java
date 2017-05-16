@@ -1,16 +1,11 @@
 package com.kitri.pay.join;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.event.ActionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.GridLayout;
-import java.awt.FlowLayout;
-import java.awt.Cursor;
 
 public class UserJoin extends JInternalFrame {
 
@@ -50,6 +45,11 @@ public class UserJoin extends JInternalFrame {
     private JPanel joinAdressLabelPane;
     private JLabel joinAdressLabel;
     private JPanel JoinAdressPane;
+    public JRadioButton maleRadio;
+    public JRadioButton femaleRadio;
+    private ButtonGroup genderGroup;
+
+    public boolean isMale;
 
     private UserJoinListenter listener;
 
@@ -165,14 +165,19 @@ public class UserJoin extends JInternalFrame {
 	BackgroundPane.add(overCheckBtn);
 
 	GenderCheckPane = new JPanel();
+	genderGroup = new ButtonGroup();
 	GenderCheckPane.setBounds(356, 279, 105, 43);
 	BackgroundPane.add(GenderCheckPane);
 
-	JRadioButton rdbtnNewRadioButton = new JRadioButton("\uB0A8");
-	GenderCheckPane.add(rdbtnNewRadioButton);
+	maleRadio = new JRadioButton("\uB0A8", true);
 
-	JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("\uC5EC");
-	GenderCheckPane.add(rdbtnNewRadioButton_1);
+	femaleRadio = new JRadioButton("\uC5EC", false);
+
+	genderGroup.add(maleRadio);
+	genderGroup.add(femaleRadio);
+
+	GenderCheckPane.add(maleRadio);
+	GenderCheckPane.add(femaleRadio);
 
 	joinBaseLabel = new JLabel("\uAE30\uBCF8\uC815\uBCF4");
 	joinBaseLabel.setBounds(17, 90, 91, 21);
@@ -258,12 +263,31 @@ public class UserJoin extends JInternalFrame {
 	joinAdressTf.setColumns(10);
 
 	joinCloseBtn.addActionListener(listener);
+	joinConfirmBtn.addActionListener(listener);
+	overCheckBtn.addActionListener(listener);
+	maleRadio.addActionListener(listener);
+	femaleRadio.addActionListener(listener);
 
 	// this.setLocationRelativeTo(null);
     }
 
-    public void checkIdDialog() {
-	JOptionPane.showMessageDialog(this, "중복된 아이디입니다.", "아이디중복", JOptionPane.WARNING_MESSAGE);
-	
+    public void checkIdFalseDialog() {
+	JOptionPane.showMessageDialog(this, "중복된 아이디입니다.", "아이디중복확인", JOptionPane.WARNING_MESSAGE);
+
+    }
+
+    public void checkIdTrueDialog() {
+	JOptionPane.showMessageDialog(this, "사용할 수 있는 아이디입니다.", "아이디중복확인", JOptionPane.WARNING_MESSAGE);
+
+    }
+
+    public void checkIdCheckDialog() {
+	JOptionPane.showMessageDialog(this, "아이디 중복확인 해주세요.", "아이디중복확인", JOptionPane.WARNING_MESSAGE);
+
+    }
+
+    public void joinFailDialog() {
+	JOptionPane.showMessageDialog(this, "회원가입에 실패했습니다.", "회원가입 실패", JOptionPane.WARNING_MESSAGE);
+
     }
 }

@@ -7,6 +7,7 @@ import com.kitri.pay.dto.ComPrepaidInfoDto;
 import com.kitri.pay.dto.PointInfoDto;
 import com.kitri.pay.main.Main;
 import com.kitri.pay.network.PacketInformation.ComPrepaidInfo;
+import com.kitri.pay.payment.PaymentView;
 
 public class Services {
     private Network network;
@@ -16,6 +17,11 @@ public class Services {
 	// getComPrepaidInfo();
 	// getPointInfo();
 
+    }
+
+    public void loginSuccess() {
+	network.view.login.setVisible(false);
+	network.view.payment.setVisible(true);
     }
 
     public void getComPrepaidInfo() {
@@ -29,11 +35,13 @@ public class Services {
     }
 
     public void checkId(String data) {
+	System.out.println("checkId(Response)");
 	if (data.equals("0")) {
 	    network.view.join.checkId = false;
-	    network.view.join.checkIdDialog();
+	    network.view.join.checkIdFalseDialog();
 	} else {
 	    network.view.join.checkId = true;
+	    network.view.join.checkIdTrueDialog();
 	}
     }
 

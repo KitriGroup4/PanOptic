@@ -16,6 +16,8 @@ import java.security.Key;
 import java.sql.SQLException;
 import java.util.*;
 
+import com.kitri.admin.server.PacketInformation.ProgramValue;
+
 public class ClientHandlerThread extends Thread {
 
     private Abortable abortable;
@@ -217,40 +219,59 @@ public class ClientHandlerThread extends Thread {
 	    getRequest(packetType);
 	    break;
 	case PacketInformation.Operation.LOGIN:
-
+	    loginRequest(packetType);
 	    break;
 	case PacketInformation.Operation.JOIN:
 	    joinRequest(packetType);
 	    break;
-	    
+	case PacketInformation.Operation.BUY:
+
+	    break;
+
 	default:
 	}
     }
-    
-    private void joinRequest(int packetType){
-	System.out.println("joinRequest()");
+
+    private void buyRequest(int packetType) {
+	System.out.println("buyRequest");
 	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
 	
 	switch(packetType){
+	case PacketInformation.PacketType.POINT:
+	    services.buyPoint(data);
+	    break;
+	case PacketInformation.PacketType.TIME:
+	    services.buyTime(data);
+	    break;
+	    default:
+	}
+	
+    }
+
+    private void joinRequest(int packetType) {
+	System.out.println("joinRequest()");
+	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
+
+	switch (packetType) {
 	case PacketInformation.PacketType.USER_INFO:
 	    services.joinUser(data);
 	    break;
 	case PacketInformation.PacketType.CHECK_USER_ID:
-//	    services.
+	    services.checkId(data);
 	    break;
-	    default:
+	default:
 	}
     }
 
     private void loginRequest(int packetType) {
 	System.out.println("loginRequest()");
 	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
-	
-	switch(packetType){
-	case PacketInformation.PacketType.USER_INFO:
+
+	switch (packetType) {
+	case PacketInformation.PacketType.ID_PW:
 	    services.loginUser(data);
 	    break;
-	    default:
+	default:
 	}
     }
 
@@ -284,7 +305,8 @@ public class ClientHandlerThread extends Thread {
 	buff.append("/");
 	buff.append(data);
 	buff.append("!");
-
+	buff.append("\n");
+	System.out.println("send : " + buff.toString());
 	try {
 	    client.write(ByteBuffer.wrap(buff.toString().getBytes()));
 	} catch (IOException e) {
@@ -304,6 +326,7 @@ public class ClientHandlerThread extends Thread {
 	buff.append("/");
 	buff.append(data);
 	buff.append("!");
+	buff.append("\n");
 	try {
 	    client.write(ByteBuffer.wrap(buff.toString().getBytes()));
 	} catch (IOException e) {
@@ -314,7 +337,7 @@ public class ClientHandlerThread extends Thread {
     public void sendPacket(int operator, int packetType, int data) {
 	StringBuilder buff = new StringBuilder("");
 
-	buff.append(PacketInformation.ProgramValue.PAYMENT);
+	buff.append(clientProgramValue);
 	buff.append("/");
 	buff.append(operator);
 	buff.append("/");
@@ -322,6 +345,9 @@ public class ClientHandlerThread extends Thread {
 	buff.append("/");
 	buff.append(data);
 	buff.append("!");
+	buff.append("\n");
+
+	System.out.println("send : " + buff.toString());
 	try {
 	    client.write(ByteBuffer.wrap(buff.toString().getBytes()));
 	} catch (IOException e) {
@@ -332,7 +358,7 @@ public class ClientHandlerThread extends Thread {
     public void sendPacket(int operator, int packetType, byte data) {
 	StringBuilder buff = new StringBuilder("");
 
-	buff.append(PacketInformation.ProgramValue.PAYMENT);
+	buff.append(clientProgramValue);
 	buff.append("/");
 	buff.append(operator);
 	buff.append("/");
@@ -340,6 +366,7 @@ public class ClientHandlerThread extends Thread {
 	buff.append("/");
 	buff.append(data);
 	buff.append("!");
+	buff.append("\n");
 	try {
 	    client.write(ByteBuffer.wrap(buff.toString().getBytes()));
 	} catch (IOException e) {
@@ -350,7 +377,7 @@ public class ClientHandlerThread extends Thread {
     public void sendPacket(int operator, int packetType, String data) {
 	StringBuilder buff = new StringBuilder("");
 
-	buff.append(PacketInformation.ProgramValue.PAYMENT);
+	buff.append(clientProgramValue);
 	buff.append("/");
 	buff.append(operator);
 	buff.append("/");
@@ -358,6 +385,7 @@ public class ClientHandlerThread extends Thread {
 	buff.append("/");
 	buff.append(data);
 	buff.append("!");
+	buff.append("\n");
 
 	try {
 	    client.write(ByteBuffer.wrap(buff.toString().getBytes()));

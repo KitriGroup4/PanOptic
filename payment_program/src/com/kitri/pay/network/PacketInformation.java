@@ -27,6 +27,7 @@ public class PacketInformation {
 	public static final byte COUNT = 2;
 	public static final byte LOGIN = 3;
 	public static final byte JOIN = 4;
+	public static final byte BUY = 5;
     }
 
     public static class PacketType {
@@ -34,6 +35,11 @@ public class PacketInformation {
 	public static final byte COM_PREPAID_INFO = 1;
 	public static final byte USER_INFO = 2;
 	public static final byte CHECK_USER_ID = 3;
+	public static final byte IS_OK = 4;
+	public static final byte IS_FAIL = 5;
+	public static final byte ID_PW = 6;
+	public static final byte POINT = 7;
+	public static final byte TIME = 8;
     }
 
     public static class ComPrepaidInfo {
