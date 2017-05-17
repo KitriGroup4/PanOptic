@@ -55,19 +55,6 @@ public class BSListFrame extends JFrame {
 		jTable= new JTable(db.rows, columnNames);
 		jScollPane = new JScrollPane(jTable);	
 
-///////////////////////////////////////////////////////////////		
-//Test: dto 안에 siteRow 벡터에 생성자에 입력한 값이 들어가는가 하는 Test		
-//		int size = dto.getSiteRow().size();
-//		
-//		for (int i = 0; i < size; i++) {
-//			System.out.println(dto.getSiteRow().elementAt(i));
-//		}
-//		System.out.println(size);
-///////////////////////////////////////////////////////////////	
-		
-//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		this.addWindowListener(new WindowAdapterExt(this));
-
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 610);
 		contentPane = new JPanel();

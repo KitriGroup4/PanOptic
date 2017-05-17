@@ -20,6 +20,7 @@ public class ManagementJP extends JPanel {
 	/**
 	 * Create the panel.
 	 */
+	
 	public ManagementJP() {
 		regEmp = new RegisterEmployeeFrame();
 		wageInfo = new WorkWageInfoFrame();
