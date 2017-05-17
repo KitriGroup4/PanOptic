@@ -6,6 +6,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import javax.swing.border.LineBorder;
 
 public class UserLogin extends JInternalFrame {
 
@@ -17,10 +18,11 @@ public class UserLogin extends JInternalFrame {
     private JPanel LoginInputPane;
     public JTextField loginIdTf;
     public JTextField loginPwTf;
-    private JPanel LoginButnPane;
     public JButton closeButton;
     public JButton loginBtn;
-    private JLabel LoginTilteLabel;
+    private JPanel LoginButnPane;
+    private JPanel comImgPanel;
+    private JLabel comimg;
 
     private UserLoginListener listener;
 
@@ -28,86 +30,95 @@ public class UserLogin extends JInternalFrame {
      * Launch the application.
      */
     public static void main(String[] args) {
-	EventQueue.invokeLater(new Runnable() {
-	    public void run() {
-		try {
-		    UserLogin frame = new UserLogin();
-		    frame.setVisible(true);
-		} catch (Exception e) {
-		    e.printStackTrace();
-		}
-	    }
-	});
+   EventQueue.invokeLater(new Runnable() {
+       public void run() {
+      try {
+          UserLogin frame = new UserLogin();
+          frame.setVisible(true);
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+       }
+   });
     }
 
     /**
      * Create the frame.
      */
     public UserLogin() {
+       setTitle("Login");
+      
+   listener = new UserLoginListener(this);
+   
+   setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+   setBounds(100, 100, 620, 175);
+   BackgroundPane = new JPanel();
+   BackgroundPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+   setContentPane(BackgroundPane);
+   BackgroundPane.setLayout(null);
+   
+   LoginButnPane = new JPanel();
+   LoginButnPane.setBounds(472, 15, 109, 94);
+   BackgroundPane.add(LoginButnPane);
+   LoginButnPane.setLayout(new GridLayout(0, 1, 0, 0));
+   
+      loginBtn = new JButton("\uB85C\uADF8\uC778");
+      LoginButnPane.add(loginBtn);
+      
+         closeButton = new JButton("´Ý±â");
+         LoginButnPane.add(closeButton);
+         closeButton.addActionListener(new ActionListener() {
+             public void actionPerformed(ActionEvent e) {
+             }
+         });
 
-	listener = new UserLoginListener(this);
+   LoginContentPane = new JPanel();
+   LoginContentPane.setBounds(204, 15, 257, 94);
+   BackgroundPane.add(LoginContentPane);
+   LoginContentPane.setLayout(new BorderLayout(10, 0));
 
-	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	setBounds(100, 100, 355, 188);
-	BackgroundPane = new JPanel();
-	BackgroundPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-	setContentPane(BackgroundPane);
-	BackgroundPane.setLayout(new BorderLayout(0, 0));
+   LoginLabelPane = new JPanel();
+   LoginContentPane.add(LoginLabelPane, BorderLayout.WEST);
+   LoginLabelPane.setLayout(new GridLayout(2, 0, 0, 0));
 
-	LoginContentPane = new JPanel();
-	BackgroundPane.add(LoginContentPane);
-	LoginContentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+   loginIdLable = new JLabel("\uC544\uC774\uB514");
+   loginIdLable.setFont(new Font("±¼¸²", Font.BOLD, 16));
+   loginIdLable.setHorizontalAlignment(SwingConstants.RIGHT);
+   LoginLabelPane.add(loginIdLable);
 
-	LoginLabelPane = new JPanel();
-	LoginContentPane.add(LoginLabelPane);
-	LoginLabelPane.setLayout(new GridLayout(2, 0, 0, 0));
+   loginPwLabel = new JLabel("\uBE44\uBC00\uBC88\uD638");
+   loginPwLabel.setFont(new Font("±¼¸²", Font.BOLD, 16));
+   loginPwLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+   LoginLabelPane.add(loginPwLabel);
 
-	loginIdLable = new JLabel("ID");
-	loginIdLable.setHorizontalAlignment(SwingConstants.CENTER);
-	LoginLabelPane.add(loginIdLable);
+   LoginInputPane = new JPanel();
+   LoginContentPane.add(LoginInputPane);
+   LoginInputPane.setLayout(new GridLayout(2, 1, 5, 5));
 
-	loginPwLabel = new JLabel("Password");
-	loginPwLabel.setHorizontalAlignment(SwingConstants.CENTER);
-	LoginLabelPane.add(loginPwLabel);
+   loginIdTf = new JTextField();
+   LoginInputPane.add(loginIdTf);
+   loginIdTf.setColumns(10);
 
-	LoginInputPane = new JPanel();
-	LoginContentPane.add(LoginInputPane);
-	LoginInputPane.setLayout(new GridLayout(2, 1, 0, 0));
+   loginPwTf = new JTextField();
+   LoginInputPane.add(loginPwTf);
+   loginPwTf.setColumns(10);
+   
+   comImgPanel = new JPanel();
+   comImgPanel.setBackground(Color.WHITE);
+   comImgPanel.setForeground(Color.WHITE);
+   comImgPanel.setBounds(17, 15, 170, 89);
+   BackgroundPane.add(comImgPanel);
+   comImgPanel.setLayout(new BoxLayout(comImgPanel, BoxLayout.X_AXIS));
+   
+   comimg = new JLabel("");
+   comimg.setIcon(new ImageIcon("C:\\java\\workspace\\javase\\PanOptic\\src\\img\\com.png"));
+   comImgPanel.add(comimg);
 
-	loginIdTf = new JTextField();
-	LoginInputPane.add(loginIdTf);
-	loginIdTf.setColumns(10);
-
-	loginPwTf = new JTextField();
-	LoginInputPane.add(loginPwTf);
-	loginPwTf.setColumns(10);
-
-	LoginButnPane = new JPanel();
-	LoginContentPane.add(LoginButnPane);
-	LoginButnPane.setLayout(new GridLayout(1, 2, 0, 0));
-
-	closeButton = new JButton("´Ý±â");
-	closeButton.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-	    }
-	});
-	LoginButnPane.add(closeButton);
-
-	loginBtn = new JButton("\uB85C\uADF8\uC778");
-	LoginButnPane.add(loginBtn);
-
-	LoginTilteLabel = new JLabel("\uB85C\uADF8\uC778");
-	LoginTilteLabel.setHorizontalAlignment(SwingConstants.CENTER);
-	LoginTilteLabel.setFont(new Font("±¼¸²", Font.PLAIN, 26));
-	BackgroundPane.add(LoginTilteLabel, BorderLayout.NORTH);
-
-	closeButton.addActionListener(listener);
-	loginBtn.addActionListener(listener);
+   closeButton.addActionListener(listener);
+   loginBtn.addActionListener(listener);
 
     }
-
-    public void loginFailDialog() {
+    public void loginFailDialog(){
 	JOptionPane.showMessageDialog(this, "·Î±×ÀÎ¿¡ ½ÇÆÐÇß½À´Ï´Ù.", "·Î±×ÀÎ ½ÇÆÐ", JOptionPane.WARNING_MESSAGE);
-
     }
 }

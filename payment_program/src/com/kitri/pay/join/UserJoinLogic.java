@@ -7,10 +7,10 @@ import com.kitri.pay.network.PacketInformation;
 public class UserJoinLogic {
 
     public void checkId(String id) {
-	if(!id.isEmpty() && !id.equals("")){	
+	if (!id.isEmpty() && !id.equals("")) {
 	    Main.network.sendPacket(PacketInformation.Operation.JOIN, PacketInformation.PacketType.CHECK_USER_ID, id);
 	}
-   }
+    }
 
     public void joinUser(UserJoin join) {
 	if (join.checkId) {
@@ -21,11 +21,11 @@ public class UserJoinLogic {
 	    String pwCheck = join.joinPwCheck.getText().trim();
 	    String hp = join.joinHpTf.getText().trim();
 	    String email = join.joinEmailTf.getText().trim();
-	    String birth = join.joinBirth.getText().trim();
+	    String birth = join.yy.getSelectedItem() + "-" + join.mm.getSelectedItem() + "-" + join.dd.getSelectedItem();
 	    String isMale = join.isMale ? "1" : "0";
-	    
+
 	    // 유효성검사
-	    
+
 	    dto.setUserName(name);
 	    dto.setUserId(id);
 	    dto.setUserPw(pw);
@@ -33,13 +33,12 @@ public class UserJoinLogic {
 	    dto.setUserEmail(email);
 	    dto.setUserBirth(birth);
 	    dto.setIsMale(isMale);
-	    Main.network.sendPacket(PacketInformation.Operation.JOIN, PacketInformation.PacketType.USER_INFO, dto.joinToString());
-	    
-	    
+	    Main.network.sendPacket(PacketInformation.Operation.JOIN, PacketInformation.PacketType.USER_INFO,
+		    dto.joinToString());
+
 	} else {
 	    join.checkIdCheckDialog();
 	}
     }
-    
 
 }

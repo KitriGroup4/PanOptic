@@ -70,6 +70,7 @@ public class Network implements Runnable {
 		if (socket != null) {
 		    socket.close();
 		}
+		isRunnable = false;
 	    } catch (Exception e2) {
 		e2.printStackTrace();
 	    }
@@ -150,7 +151,7 @@ public class Network implements Runnable {
 	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
 	switch (packetType) {
 	case PacketInformation.PacketType.IS_OK:
-	    services.loginSuccess();
+	    services.loginSuccess(data);
 	    break;
 	case PacketInformation.PacketType.IS_FAIL:
 	    view.login.loginFailDialog();

@@ -4,8 +4,10 @@ import java.sql.*;
 
 public class Dao {
     public final String url = "jdbc:oracle:thin:@localhost:1521:xe";
-    public final String uid = "pc_manager";
-    public final String upw = "pc_manager";
+//    public final String uid = "pc_manager";
+//    public final String upw = "pc_manager";
+    public final String uid = "test";
+    public final String upw = "test";
 
     protected Connection con;
     protected Statement stmt;

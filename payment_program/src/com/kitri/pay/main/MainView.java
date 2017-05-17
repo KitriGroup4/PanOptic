@@ -55,6 +55,7 @@ public class MainView extends JFrame {
     private JInternalFrame internalFrame;
     public JTextArea ta;
     
+    
 
     /**
      * Launch the application.
@@ -222,4 +223,5 @@ public class MainView extends JFrame {
 	JOptionPane.showMessageDialog(this, "회원가입을 축하드립니다!!", "회원가입성공", JOptionPane.WARNING_MESSAGE);
 
     }
+    
 }

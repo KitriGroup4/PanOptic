@@ -6,19 +6,14 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EtchedBorder;
 
 public class UserJoin extends JInternalFrame {
 
     private JPanel BackgroundPane;
     public JTextField joinTf;
     public JTextField joinName;
-    public JTextField joinPw;
-    public JTextField joinPwCheck;
-    public JTextField joinBirth;
-    public JTextField joinHomeNumberTf;
-    public JTextField joinEmailTf;
-    public JTextField joinHpTf;
-    public JTextField joinAdressTf;
     public JButton joinConfirmBtn;
     public JButton joinCloseBtn;
     private JPanel BaseInfoLabelPane;
@@ -32,19 +27,6 @@ public class UserJoin extends JInternalFrame {
     public JButton overCheckBtn;
     private JPanel GenderCheckPane;
     private JLabel joinBaseLabel;
-    private JLabel joinSubLabel;
-    private JPanel SubInfoInputPane;
-    private JPanel SubInfoLabelPane1;
-    private JLabel joinJobLabel;
-    private JLabel joinHpLabel;
-    private JPanel SubInfoLabelPane;
-    private JLabel joinEmailLabel;
-    private JLabel joinHomeNumberLabel;
-    private JPanel SubInfoInputPane2;
-    private JComboBox jobComboBox;
-    private JPanel joinAdressLabelPane;
-    private JLabel joinAdressLabel;
-    private JPanel JoinAdressPane;
     public JRadioButton maleRadio;
     public JRadioButton femaleRadio;
     private ButtonGroup genderGroup;
@@ -54,6 +36,17 @@ public class UserJoin extends JInternalFrame {
     private UserJoinListenter listener;
 
     public boolean checkId;
+    public JPasswordField joinPw;
+    public JPasswordField joinPwCheck;
+    private JPanel yymmdd;
+    private JPanel SubInfoLabelPanel;
+    private JLabel eMailL;
+    public JTextField joinEmailTf;
+    public JTextField joinHpTf;
+    private JPanel SubInfoLabelPanel2;
+    public JComboBox yy;
+    public JComboBox mm;
+    public JComboBox dd;
 
     /**
      * Launch the application.
@@ -78,7 +71,7 @@ public class UserJoin extends JInternalFrame {
 	listener = new UserJoinListenter(this);
 
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	setBounds(100, 100, 500, 600);
+	setBounds(100, 100, 500, 490);
 	BackgroundPane = new JPanel();
 	BackgroundPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 	setContentPane(BackgroundPane);
@@ -93,11 +86,11 @@ public class UserJoin extends JInternalFrame {
 	joinTf.setColumns(10);
 
 	joinConfirmBtn = new JButton("\uAC00\uC785\uC694\uCCAD");
-	joinConfirmBtn.setBounds(193, 499, 125, 29);
+	joinConfirmBtn.setBounds(194, 380, 125, 34);
 	BackgroundPane.add(joinConfirmBtn);
 
 	joinCloseBtn = new JButton("\uB2EB\uAE30");
-	joinCloseBtn.setBounds(335, 499, 125, 29);
+	joinCloseBtn.setBounds(336, 380, 125, 34);
 	BackgroundPane.add(joinCloseBtn);
 
 	BaseInfoLabelPane = new JPanel();
@@ -143,18 +136,27 @@ public class UserJoin extends JInternalFrame {
 	BaseInfoPane.add(joinName);
 	joinName.setColumns(10);
 
-	joinPw = new JTextField();
+	joinPw = new JPasswordField();
 	BaseInfoPane.add(joinPw);
-	joinPw.setColumns(10);
 
-	joinPwCheck = new JTextField();
+	joinPwCheck = new JPasswordField();
 	BaseInfoPane.add(joinPwCheck);
-	joinPwCheck.setColumns(10);
 
-	joinBirth = new JTextField();
-	joinBirth.setHorizontalAlignment(SwingConstants.LEFT);
-	BaseInfoPane.add(joinBirth);
-	joinBirth.setColumns(10);
+	yymmdd = new JPanel();
+	BaseInfoPane.add(yymmdd);
+	yymmdd.setLayout(new GridLayout(1, 3, 5, 5));
+
+	yy = new JComboBox();
+	addComboBoxItems(yy, 1980, 2010);
+	yymmdd.add(yy);
+
+	mm = new JComboBox();
+	addComboBoxItems(mm, 1, 12);
+	yymmdd.add(mm);
+
+	dd = new JComboBox();
+	addComboBoxItems(dd, 1, 31);
+	yymmdd.add(dd);
 
 	overCheckBtn = new JButton("\uC911\uBCF5\uD655\uC778");
 	overCheckBtn.setBounds(356, 116, 105, 35);
@@ -184,83 +186,29 @@ public class UserJoin extends JInternalFrame {
 	joinBaseLabel.setHorizontalAlignment(SwingConstants.LEFT);
 	BackgroundPane.add(joinBaseLabel);
 
-	joinSubLabel = new JLabel("\uBD80\uAC00\uC815\uBCF4");
-	joinSubLabel.setBounds(17, 339, 91, 21);
-	joinSubLabel.setHorizontalAlignment(SwingConstants.LEFT);
-	BackgroundPane.add(joinSubLabel);
+	SubInfoLabelPanel2 = new JPanel();
+	SubInfoLabelPanel2.setBounds(243, 330, 218, 35);
+	BackgroundPane.add(SubInfoLabelPanel2);
+	SubInfoLabelPanel2.setLayout(new BorderLayout(10, 0));
 
-	SubInfoInputPane = new JPanel();
-	SubInfoInputPane.setBounds(91, 367, 144, 74);
-	BackgroundPane.add(SubInfoInputPane);
-	SubInfoInputPane.setLayout(new GridLayout(0, 1, 0, 0));
-
-	joinEmailTf = new JTextField();
-	joinEmailTf.setHorizontalAlignment(SwingConstants.CENTER);
-	SubInfoInputPane.add(joinEmailTf);
-	joinEmailTf.setColumns(10);
-
-	joinHomeNumberTf = new JTextField();
-	joinHomeNumberTf.setHorizontalAlignment(SwingConstants.CENTER);
-	SubInfoInputPane.add(joinHomeNumberTf);
-	joinHomeNumberTf.setColumns(10);
-
-	SubInfoLabelPane1 = new JPanel();
-	SubInfoLabelPane1.setBounds(239, 367, 61, 74);
-	BackgroundPane.add(SubInfoLabelPane1);
-	SubInfoLabelPane1.setLayout(new GridLayout(0, 1, 5, 5));
-
-	joinJobLabel = new JLabel("\uC9C1\uC5C5");
-	joinJobLabel.setHorizontalAlignment(SwingConstants.LEFT);
-	SubInfoLabelPane1.add(joinJobLabel);
-
-	joinHpLabel = new JLabel("\uD578\uB4DC\uD3F0");
-	joinHpLabel.setHorizontalAlignment(SwingConstants.LEFT);
-	SubInfoLabelPane1.add(joinHpLabel);
-
-	SubInfoLabelPane = new JPanel();
-	SubInfoLabelPane.setBounds(17, 367, 72, 74);
-	BackgroundPane.add(SubInfoLabelPane);
-	SubInfoLabelPane.setLayout(new GridLayout(0, 1, 5, 5));
-
-	joinEmailLabel = new JLabel("E-Mail");
-	joinEmailLabel.setHorizontalTextPosition(SwingConstants.LEFT);
-	joinEmailLabel.setHorizontalAlignment(SwingConstants.LEFT);
-	SubInfoLabelPane.add(joinEmailLabel);
-
-	joinHomeNumberLabel = new JLabel("\uC5F0\uB77D\uCC98(\uC9D1)");
-	joinHomeNumberLabel.setHorizontalTextPosition(SwingConstants.LEFT);
-	joinHomeNumberLabel.setHorizontalAlignment(SwingConstants.LEFT);
-	SubInfoLabelPane.add(joinHomeNumberLabel);
-
-	SubInfoInputPane2 = new JPanel();
-	SubInfoInputPane2.setBounds(305, 367, 156, 74);
-	BackgroundPane.add(SubInfoInputPane2);
-	SubInfoInputPane2.setLayout(new GridLayout(0, 1, 5, 5));
-
-	jobComboBox = new JComboBox();
-	jobComboBox.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-	SubInfoInputPane2.add(jobComboBox);
+	JLabel hpL = new JLabel("* \uD578\uB4DC\uD3F0");
+	SubInfoLabelPanel2.add(hpL, BorderLayout.WEST);
 
 	joinHpTf = new JTextField();
-	SubInfoInputPane2.add(joinHpTf);
+	SubInfoLabelPanel2.add(joinHpTf);
 	joinHpTf.setColumns(10);
 
-	joinAdressLabelPane = new JPanel();
-	joinAdressLabelPane.setBounds(17, 443, 72, 35);
-	BackgroundPane.add(joinAdressLabelPane);
-	joinAdressLabelPane.setLayout(new GridLayout(0, 1, 0, 0));
+	SubInfoLabelPanel = new JPanel();
+	SubInfoLabelPanel.setBounds(17, 330, 218, 35);
+	BackgroundPane.add(SubInfoLabelPanel);
+	SubInfoLabelPanel.setLayout(new BorderLayout(10, 0));
 
-	joinAdressLabel = new JLabel("\uC8FC\uC18C");
-	joinAdressLabelPane.add(joinAdressLabel);
+	eMailL = new JLabel("* E-mail");
+	SubInfoLabelPanel.add(eMailL, BorderLayout.WEST);
 
-	JoinAdressPane = new JPanel();
-	JoinAdressPane.setBounds(91, 443, 370, 35);
-	BackgroundPane.add(JoinAdressPane);
-	JoinAdressPane.setLayout(new GridLayout(0, 1, 0, 0));
-
-	joinAdressTf = new JTextField();
-	JoinAdressPane.add(joinAdressTf);
-	joinAdressTf.setColumns(10);
+	joinEmailTf = new JTextField();
+	SubInfoLabelPanel.add(joinEmailTf);
+	joinEmailTf.setColumns(10);
 
 	joinCloseBtn.addActionListener(listener);
 	joinConfirmBtn.addActionListener(listener);
@@ -269,6 +217,12 @@ public class UserJoin extends JInternalFrame {
 	femaleRadio.addActionListener(listener);
 
 	// this.setLocationRelativeTo(null);
+    }
+
+    private void addComboBoxItems(JComboBox box, int start, int end) {
+	for(int i = start; i <= end; i++){
+	    box.addItem(i);
+	}
     }
 
     public void checkIdFalseDialog() {

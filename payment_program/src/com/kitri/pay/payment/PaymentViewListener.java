@@ -5,11 +5,11 @@ import java.awt.event.ActionListener;
 
 public class PaymentViewListener implements ActionListener {
     PaymentView view;
-    PayementViewLogic logic;
+    PaymentViewLogic logic;
 
     public PaymentViewListener(PaymentView view) {
 	this.view = view;
-	logic = new PayementViewLogic(view);
+	logic = new PaymentViewLogic(view);
     }
 
     @Override

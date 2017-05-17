@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import com.kitri.admin.database.dao.ComPrepaidInfoDao;
 import com.kitri.admin.database.dao.PointInfoDao;
 import com.kitri.admin.database.dao.UserInfoDao;
+import com.kitri.admin.database.dao.UserPointInfoDao;
 import com.kitri.admin.database.dto.ComPrepaidInfoDto;
 import com.kitri.admin.database.dto.PointInfoDto;
 import com.kitri.admin.database.dto.UserInfoDto;
+import com.kitri.admin.database.dto.UserPointInfoDto;
 
 public class Services {
     ClientHandlerThread clientHandlerThread;
@@ -72,14 +74,20 @@ public class Services {
 	String pw = datas[1];
 	String pwCheck;
 	UserInfoDao dao = new UserInfoDao();
+	String temp = dao.checkId(id);
+	String[] temps;
 
-	if ((pwCheck = dao.checkId(id)).isEmpty()) {
+	if (temp.isEmpty()) {
 	    clientHandlerThread.sendPacket(PacketInformation.Operation.LOGIN, PacketInformation.PacketType.IS_FAIL,
 		    PacketInformation.IDLE);
+	    return;
 	} else {
+	    temps = temp.split(",");
+	    String num = temps[0];
+	    pwCheck = temps[1];
 	    if (pwCheck.equals(pw)) {
 		clientHandlerThread.sendPacket(PacketInformation.Operation.LOGIN, PacketInformation.PacketType.IS_OK,
-			PacketInformation.IDLE);
+			num);
 	    } else {
 		clientHandlerThread.sendPacket(PacketInformation.Operation.LOGIN, PacketInformation.PacketType.IS_FAIL,
 			PacketInformation.IDLE);
@@ -105,16 +113,34 @@ public class Services {
 
     public void buyPoint(String data) {
 	System.out.println("buyPoint()");
-	
-	clientHandlerThread.sendPacket(PacketInformation.Operation.BUY, PacketInformation.PacketType.IS_OK, PacketInformation.IDLE);
-	
+	String[] datas = data.split(","); // index,userNum
+	int userNum = Integer.parseInt(datas[1]);
+	PointInfoDao dao = new PointInfoDao();
+	PointInfoDto dto = dao.select(Integer.parseInt(datas[0]));
+
+	UserPointInfoDao uDao = new UserPointInfoDao();
+	UserPointInfoDto uDto = uDao.select(userNum);
+
+	if (uDto == null) {
+	    uDto = new UserPointInfoDto();
+	    uDto.setPoint(dto.getValue());
+	    uDto.setUserNum(userNum);
+	    uDao.insert(uDto);
+	} else {
+	    uDto.setPoint(uDto.getPoint() + dto.getValue());
+	    uDao.update(uDto);
+	}
+
+	clientHandlerThread.sendPacket(PacketInformation.Operation.BUY, PacketInformation.PacketType.IS_OK,
+		PacketInformation.IDLE);
+
     }
-    
+
     public void buyTime(String data) {
 	System.out.println("buyTime()");
-	
 
-	clientHandlerThread.sendPacket(PacketInformation.Operation.BUY, PacketInformation.PacketType.IS_OK, PacketInformation.IDLE);
+	clientHandlerThread.sendPacket(PacketInformation.Operation.BUY, PacketInformation.PacketType.IS_OK,
+		PacketInformation.IDLE);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

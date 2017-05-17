@@ -6,7 +6,7 @@ import com.kitri.admin.database.dto.ComPrepaidInfoDto;
 import com.kitri.admin.database.dto.PointInfoDto;
 
 public class PointInfoDao extends Dao {
-    
+
     public ArrayList<PointInfoDto> selectAll() {
 	ArrayList<PointInfoDto> dtos = new ArrayList<>();
 
@@ -34,6 +34,35 @@ public class PointInfoDao extends Dao {
 	return dtos;
     }
 
+    public PointInfoDto select(int num) {
+	PointInfoDto dto = new PointInfoDto();
+
+	try {
+	    con = getConnection();
+	    preStmt = con.prepareStatement("select * from point_info where num = ?");
+	    preStmt.setInt(1, num);
+	    rs = preStmt.executeQuery();
+	    
+//	    stmt = con.createStatement();
+//	    rs = stmt.executeQuery("select * from point_info where ");
+
+	    while (rs.next()) {
+		dto = new PointInfoDto();
+		dto.setNum(rs.getInt(1));
+		dto.setValue(rs.getInt(2));
+		dto.setPrice(rs.getInt(3));
+
+	    }
+
+	} catch (Exception e) {
+	    e.printStackTrace();
+	} finally {
+	    resetStmt();
+	}
+	return dto;
+
+    }
+
     public boolean insert(int num, float time, int price) {
 	int result = 0;
 
@@ -54,5 +83,11 @@ public class PointInfoDao extends Dao {
 
 	return result == 0 ? false : true;
 
+    }
+    
+    public static void main(String[] args) {
+	PointInfoDao dao = new PointInfoDao();
+	PointInfoDto dto = dao.select(0);
+	System.out.println(dto.toString());
     }
 }

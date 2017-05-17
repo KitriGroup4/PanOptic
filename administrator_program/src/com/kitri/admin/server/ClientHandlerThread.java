@@ -117,6 +117,7 @@ public class ClientHandlerThread extends Thread {
 
 	    if (client != null) {
 		try {
+		    done = true;
 		    // client.finishConnect();
 		    System.out.println("Client :: Close Socket");
 		    client.socket().close();
@@ -225,7 +226,7 @@ public class ClientHandlerThread extends Thread {
 	    joinRequest(packetType);
 	    break;
 	case PacketInformation.Operation.BUY:
-
+	    buyRequest(packetType);
 	    break;
 
 	default:

@@ -6,8 +6,10 @@ package com.kitri.admin.server;
  */
 public class PacketInformation {
     
-    public static byte PACKET_SIZE = 4;
-    public static byte IDLE = -99;
+    public final static byte PACKET_SIZE = 4;
+    public final static byte IDLE = -99;
+    public final static String PACKET_DIVISION = "!";
+//    public final static String 
 
     public static class ProgramValue {
 	public static final byte ADMIN = 0;

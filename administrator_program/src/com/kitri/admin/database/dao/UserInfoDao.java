@@ -108,12 +108,14 @@ public class UserInfoDao extends Dao {
 
 	try {
 	    con = getConnection();
-	    preStmt = con.prepareStatement("select user_pw from user_info where user_id = ?");
+	    preStmt = con.prepareStatement("select user_num, user_pw from user_info where user_id = ?");
 	    preStmt.setString(1, id);
 	    rs = preStmt.executeQuery();
 
 	    if (rs.next()) {
-		result = rs.getString(1);
+		result += rs.getInt(1);
+		result += ",";
+		result += rs.getString(2);
 	    }
 
 	} catch (SQLException e) {

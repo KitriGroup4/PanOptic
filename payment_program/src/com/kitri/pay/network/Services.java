@@ -19,9 +19,11 @@ public class Services {
 
     }
 
-    public void loginSuccess() {
+    public void loginSuccess(String data) {
 	network.view.login.setVisible(false);
 	network.view.payment.setVisible(true);
+	network.view.payment.userNum = Integer.parseInt(data);
+	
     }
 
     public void getComPrepaidInfo() {
