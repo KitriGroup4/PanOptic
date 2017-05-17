@@ -3,17 +3,21 @@ package com.kitri.admin.main.controlPanel.BlockedSites;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.kitri.admin.main.fixCon.Fix;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class DeleteBlockedSiteFrame extends JFrame {
-	public ListOfBlockedSitesFrame lbs;
-	
-	private JPanel contentPane;
-	private JTextField siteNameTF;
+public class DelBS extends JFrame {
+	JPanel contentPane;
+	JTextField siteNameTF;
+	JButton ok;
+	JLabel siteName;
 
 	/**
 	 * Launch the application.
@@ -22,8 +26,8 @@ public class DeleteBlockedSiteFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DeleteBlockedSiteFrame frame = new DeleteBlockedSiteFrame();
-					frame.setVisible(false);
+					DelBS frame = new DelBS();
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -34,23 +38,8 @@ public class DeleteBlockedSiteFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public DeleteBlockedSiteFrame () {
-//		getContentPane().setLayout(null);
-//		
-//		JLabel siteName = new JLabel("\uC2F8\uC774\uD2B8\uBA85");
-//		siteName.setBounds(80, 105, 46, 14);
-//		getContentPane().add(siteName);
-//		
-//		siteNameTF = new JTextField();
-//		siteNameTF.setBounds(136, 102, 86, 20);
-//		getContentPane().add(siteNameTF);
-//		siteNameTF.setColumns(10);
-//		siteNameTF.requestFocus();
-	}
-	
-	public DeleteBlockedSiteFrame(ListOfBlockedSitesFrame lbs) {
-		this.lbs = lbs;
-		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+	public DelBS() {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -59,14 +48,21 @@ public class DeleteBlockedSiteFrame extends JFrame {
 		
 		getContentPane().setLayout(null);
 		
-		JLabel siteName = new JLabel("\uC2F8\uC774\uD2B8\uBA85");
-		siteName.setBounds(80, 105, 46, 14);
+		siteName = new JLabel("\uC2F8\uC774\uD2B8\uBA85");
+		siteName.setBounds(100, 105, 80, 14);
 		getContentPane().add(siteName);
 		
 		siteNameTF = new JTextField();
-		siteNameTF.setBounds(136, 102, 86, 20);
+		siteNameTF.setBounds(200, 102, 150, 20);
 		getContentPane().add(siteNameTF);
 		siteNameTF.setColumns(10);
 		siteNameTF.requestFocus();
+		
+		ok = new JButton("»Æ¿Œ");
+		ok.setBounds(170, 160, 90, 21);
+		getContentPane().add(ok);
+		
+		Fix.FIXFRAME(this);
 	}
+
 }

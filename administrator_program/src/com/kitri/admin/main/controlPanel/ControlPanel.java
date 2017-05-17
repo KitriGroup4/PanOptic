@@ -2,7 +2,7 @@ package com.kitri.admin.main.controlPanel;
 
 import javax.swing.JPanel;
 
-import com.kitri.admin.main.controlPanel.BlockedSites.ListOfBlockedSitesFrame;
+import com.kitri.admin.main.controlPanel.BlockedSites.BSListFrame;
 import com.kitri.admin.main.controlPanel.ageRestriction.AgeRestrictionFrame;
 
 import java.awt.GridLayout;
@@ -14,15 +14,15 @@ import javax.swing.JButton;
 public class ControlPanel extends JPanel implements ActionListener {
 	JButton blockedSitesButton;
 	JButton ageRestrictionButton;
-	ListOfBlockedSitesFrame blockedSitesFrame;
-	AgeRestrictionFrame ageRestrictionFrame;
+	BSListFrame bsFrame;
+	AgeRestrictionFrame ageRestirctionFrame;
 	
 	/**
 	 * Create the panel.
 	 */
 	public ControlPanel() {
-		blockedSitesFrame = new ListOfBlockedSitesFrame();
-		ageRestrictionFrame = new AgeRestrictionFrame();
+		bsFrame = new BSListFrame();
+		ageRestirctionFrame = new AgeRestrictionFrame();
 		
 		setLayout(new GridLayout(10, 1, 0, 0));
 		
@@ -40,10 +40,10 @@ public class ControlPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		if (obj == blockedSitesButton) {
-			blockedSitesFrame.setVisible(true);
+			bsFrame.setVisible(true);
 		}
 		else if (obj == ageRestrictionButton) {
-			ageRestrictionFrame.setVisible(true);
+			ageRestirctionFrame.setVisible(true);
 		}
 	}
 	
