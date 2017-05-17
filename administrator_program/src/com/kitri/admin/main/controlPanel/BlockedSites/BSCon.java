@@ -10,12 +10,13 @@ public class BSCon implements ActionListener {
 	
 	public BSListFrame bsFrame;
 	public BSService bsService;
+	public BSDaoService daoDb;
 	
 	public BSCon(BSListFrame bsFrame) {
 		super();
 		this.bsFrame = bsFrame;
 		bsService = new BSServiceImpl(bsFrame);
-		
+		daoDb = new BSDaoServiceImpl(bsFrame);
 //		int len = BSConstant.column.length;
 //		for (int i = 0; i < len; i++) {
 //			bsFrame.columnNames.add(BSConstant.column[i]);
@@ -33,13 +34,16 @@ public class BSCon implements ActionListener {
 			bsFrame.del.setVisible(true);
 		}
 		else if (ob == bsFrame.reg.ok || ob == bsFrame.reg.siteNameTF) {
-			bsService.insert();
+			System.out.println(bsFrame.reg.urlTF.getText());
+			daoDb.insert(bsFrame.reg.urlTF.getText(), bsFrame.reg.siteNameTF.getText());
 		}
-//		else if (ob == bsFrame.reg.urlTF) {
-//			bsFrame.del.setVisible(true);
-//		}
+		else if (ob == bsFrame.reg.urlTF) {
+			bsFrame.del.setVisible(true);
+		}
 		else if (ob == bsFrame.del.ok || ob == bsFrame.del.siteNameTF) {
-			bsService.delete();
+			if (daoDb.deleteBSDto(bsFrame.del.siteNameTF.getText())){
+				
+			}
 		}
 	}
 }
