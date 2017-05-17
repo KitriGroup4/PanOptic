@@ -4,7 +4,7 @@ import java.util.StringTokenizer;
 
 public class ComPrepaidInfoDto {
     private int prepaidNum;
-    private float prepaidTime;
+    private int prepaidTime;
     private int prepaidPrice;
 
     public int getPrepaidNum() {
@@ -15,11 +15,11 @@ public class ComPrepaidInfoDto {
 	this.prepaidNum = prepaidNum;
     }
 
-    public float getPrepaidTime() {
+    public int getPrepaidTime() {
 	return prepaidTime;
     }
 
-    public void setPrepaidTime(float prepaidTime) {
+    public void setPrepaidTime(int prepaidTime) {
 	this.prepaidTime = prepaidTime;
     }
 
@@ -43,7 +43,7 @@ public class ComPrepaidInfoDto {
 		prepaidNum = Integer.parseInt(temp);
 		break;
 	    case 1:
-		prepaidTime = Float.parseFloat(temp);
+		prepaidTime = Integer.parseInt(temp);
 		break;
 	    case 2:
 		prepaidPrice = Integer.parseInt(temp);

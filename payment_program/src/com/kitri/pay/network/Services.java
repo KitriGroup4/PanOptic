@@ -21,9 +21,19 @@ public class Services {
 
     public void loginSuccess(String data) {
 	network.view.login.setVisible(false);
-	network.view.payment.setVisible(true);
-	network.view.payment.userNum = Integer.parseInt(data);
-	
+	if (network.view.payType == PacketInformation.PacketType.POINT) {
+	    if (network.view.payment.isPoint) {
+		network.view.pointException();
+	    } else {
+		Main.network.sendPacket(PacketInformation.Operation.BUY, PacketInformation.PacketType.TIME,
+			PacketInformation.PacketType.POINT + "," + network.view.payment.index + "," + network.view.payment.userNum);
+	    }
+	} else {
+	    network.view.payment.setVisible(true);
+	    
+	    network.view.payment.userNum = Integer.parseInt(data);
+	}
+
     }
 
     public void getComPrepaidInfo() {
@@ -37,7 +47,7 @@ public class Services {
     }
 
     public void checkId(String data) {
-	System.out.println("checkId(Response)");
+	Main.log("checkId(Response)");
 	if (data.equals("0")) {
 	    network.view.join.checkId = false;
 	    network.view.join.checkIdFalseDialog();
@@ -48,7 +58,7 @@ public class Services {
     }
 
     // public void setComPrepaidInfo(String data) {
-    // System.out.println("setComPrepaidInfo()");
+    // Main.log("setComPrepaidInfo()");
     // ArrayList<String> datas = divisionData(data);
     // ComPrepaidInfoDto dto;
     // dto = new ComPrepaidInfoDto();
@@ -68,7 +78,7 @@ public class Services {
     // }
     //
     // public void setPointInfo(String data) {
-    // System.out.println("setPointInfo()");
+    // Main.log("setPointInfo()");
     // ArrayList<String> datas = divisionData(data);
     // PointInfoDto dto;
     //
@@ -85,7 +95,7 @@ public class Services {
     // }
 
     public ArrayList<String> divisionData(String data) {
-	System.out.println("divisionData()");
+	Main.log("divisionData()");
 	ArrayList<String> datas = new ArrayList<>();
 
 	StringTokenizer dataToken = new StringTokenizer(data, "|");

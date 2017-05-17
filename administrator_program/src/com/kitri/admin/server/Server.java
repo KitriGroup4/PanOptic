@@ -19,101 +19,92 @@ import java.util.List;
 //import javax.swing.JTextArea;
 //import javax.swing.JFrame;
 
-
 /**
  *
  */
-public class Server //extends JFrame
+public class Server // extends JFrame
 {
 
-	public static final int PORT_NUMBER = 9831;
+    public static final int PORT_NUMBER = 9831;
 
-	private Abortable abortable;
-	private ServerThread serverThread;
-	//private static JTextArea mLogView;
+    private Abortable abortable;
+    private ServerThread serverThread;
+    // private static JTextArea mLogView;
 
-	/**
-	 * 
-	 */
-	public Server()
-	{
-		//super("");
-		//mLogView = new JTextArea ();
-		//getContentPane().add (new JScrollPane(mLogView), "Center");
-		
-		//setDefaultCloseOperation(EXIT_ON_CLOSE);
-		//setSize(400, 300);
-		//setLocation(400, 200);
-		//setVisible(true);
-		
-		abortable = new Abortable();
+    /**
+     * 
+     */
+    public Server() {
+	// super("");
+	// mLogView = new JTextArea ();
+	// getContentPane().add (new JScrollPane(mLogView), "Center");
+
+	// setDefaultCloseOperation(EXIT_ON_CLOSE);
+	// setSize(400, 300);
+	// setLocation(400, 200);
+	// setVisible(true);
+
+	abortable = new Abortable();
+    }
+
+    /**
+     * 
+     * @param args
+     * @throws Exception
+     */
+    public static void main(String[] args) throws Exception {
+
+	Server server = new Server();
+	server.start();
+
+	Thread.sleep(500);
+
+	BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+	reader.readLine();
+
+	server.stop();
+
+	System.out.println("BYE");
+	addLog("disconnect client");
+    }
+
+    /**
+     * start server
+     */
+    public void start() {
+
+	abortable.init();
+
+	if (serverThread == null || !serverThread.isAlive()) {
+	    serverThread = new ServerThread(abortable);
+	    serverThread.start();
+	}
+    }
+
+    /**
+     * s stop servers
+     */
+    public void stop() {
+
+	abortable.done = true;
+
+	if (serverThread != null && serverThread.isAlive()) {
+	    serverThread.interrupt();
 	}
 
-	/**
-	 * 
-	 * @param args
-	 * @throws Exception
-	 */
-	public static void main(String[] args) throws Exception
-	{
+    }
 
-		Server server = new Server();
-		server.start();
+    public static void addLog(String msg) {
+	// System.out.println("addLog");
+	// mLogView.append(msg + "\n");
+    }
 
-		Thread.sleep(500);
+    /**
+     *
+     */
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		reader.readLine();
+    /**
+     *
+     */
 
-		server.stop();
-
-		System.out.println("BYE");
-		addLog("disconnect client");
-	}
-
-	/**
-	 * start server
-	 */
-	public void start() 
-	{
-
-		abortable.init();
-
-		if (serverThread == null || !serverThread.isAlive()) 
-		{
-			serverThread = new ServerThread(abortable);
-			serverThread.start();
-		}
-	}
-
-	/**
-	 * stop server
-	 */
-	public void stop()
-	{
-
-		abortable.done = true;
-
-		if (serverThread != null && serverThread.isAlive())
-		{
-			serverThread.interrupt();
-		}
-		
-
-	}
-	
-	public static void addLog(String msg)
-	{
-		//System.out.println("addLog");
-		//mLogView.append(msg + "\n");
-	}
-
-	/**
-	 *
-	 */
-	
-	/**
-	 *
-	 */
-	
 }

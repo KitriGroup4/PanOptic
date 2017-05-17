@@ -14,9 +14,10 @@ public class PaymentViewLogic {
 	if (view.draw.points.size() > 0) {
 	    if (view.isPoint) {
 		Main.network.sendPacket(PacketInformation.Operation.BUY, PacketInformation.PacketType.POINT,
-			view.index + "," + view.userNum);
+			PacketInformation.PacketType.CARD + "," + view.index + "," + view.userNum);
 	    } else {
-		Main.network.sendPacket(PacketInformation.Operation.BUY, PacketInformation.PacketType.TIME, view.index + "," + view.userNum);
+		Main.network.sendPacket(PacketInformation.Operation.BUY, PacketInformation.PacketType.TIME,
+			PacketInformation.PacketType.CARD + "," + view.index + "," + view.userNum);
 	    }
 	}
     }

@@ -13,6 +13,7 @@ public class UserJoinLogic {
     }
 
     public void joinUser(UserJoin join) {
+	
 	if (join.checkId) {
 	    UserInfoDto dto = new UserInfoDto();
 	    String name = join.joinName.getText().trim();
@@ -23,8 +24,12 @@ public class UserJoinLogic {
 	    String email = join.joinEmailTf.getText().trim();
 	    String birth = join.yy.getSelectedItem() + "-" + join.mm.getSelectedItem() + "-" + join.dd.getSelectedItem();
 	    String isMale = join.isMale ? "1" : "0";
+	    Main.log(birth);
 
-	    // 유효성검사
+	    // 유효성검사를 성공하면
+	    
+	    
+	    
 
 	    dto.setUserName(name);
 	    dto.setUserId(id);
@@ -33,8 +38,9 @@ public class UserJoinLogic {
 	    dto.setUserEmail(email);
 	    dto.setUserBirth(birth);
 	    dto.setIsMale(isMale);
+	    Main.log(dto.toString());
 	    Main.network.sendPacket(PacketInformation.Operation.JOIN, PacketInformation.PacketType.USER_INFO,
-		    dto.joinToString());
+		    dto.toString());
 
 	} else {
 	    join.checkIdCheckDialog();

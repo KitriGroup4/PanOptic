@@ -36,7 +36,7 @@ public class PointInfoDao extends Dao {
 
     public PointInfoDto select(int num) {
 	PointInfoDto dto = new PointInfoDto();
-
+	System.out.println("select(num)");
 	try {
 	    con = getConnection();
 	    preStmt = con.prepareStatement("select * from point_info where num = ?");

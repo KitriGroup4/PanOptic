@@ -77,23 +77,52 @@ public class MainViewLogic {
 
 		switch (i) {
 		case 0: // 회원가입
-		    System.out.println("회원가입");
+		    Main.log("회원가입");
 		    view.join.setVisible(true);
+		    resetJoin();
 		    break;
 		case 1: // 포인트결제
-		case 2: // 카드 결제
+		    view.payType = PacketInformation.PacketType.POINT;
 		    if (isSelected()) {
 			view.login.setVisible(true);
+			resetLogin();
+		    }
+		    break;
+		case 2: // 카드 결제
+		    view.payType = PacketInformation.PacketType.CARD;
+		    if (isSelected()) {
+			view.login.setVisible(true);
+			resetLogin();
 		    }
 		    break;
 		default:
 		}
+		
 		break;
 	    }
 	}
 	return result;
     }
 
+    private void resetJoin() {
+	view.join.joinName.setText("");
+	view.join.joinId.setText("");
+	view.join.joinPw.setText("");
+	view.join.joinPwCheck.setText("");
+	view.join.joinEmailTf.setText("");
+	view.join.joinHpTf.setText("");
+	view.join.yy.setSelectedIndex(0);
+	view.join.mm.setSelectedIndex(0);
+	view.join.dd.setSelectedIndex(0);
+	view.join.maleRadio.setSelected(true);
+	view.join.femaleRadio.setSelected(false);
+	
+    }
+
+    private void resetLogin() {
+	view.login.loginIdTf.setText("");
+	view.login.loginPwTf.setText("");
+    }
 
     private void updateMoney(byte type, int money, MainView m) {
 

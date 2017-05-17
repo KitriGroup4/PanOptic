@@ -7,6 +7,7 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
+import com.kitri.pay.main.Main;
 import com.kitri.pay.main.MainView;
 
 public class Network implements Runnable {
@@ -50,7 +51,7 @@ public class Network implements Runnable {
 		// len = reader.read(byteBuffer);
 
 		packets = buffReader.readLine();
-		System.out.println("rcv : " + packets);
+		Main.log("rcv : " + packets);
 		divisionPacket(packets);
 
 		packets = null;
@@ -95,7 +96,7 @@ public class Network implements Runnable {
 	    while (unitToken.hasMoreTokens()) {
 		dataPacket[i++] = unitToken.nextToken();
 	    }
-	    System.out.println(Arrays.toString(dataPacket));
+	    Main.log(Arrays.toString(dataPacket));
 	    dicisionProgram();
 	}
     }
@@ -109,7 +110,7 @@ public class Network implements Runnable {
 
     private void dicisionOperator(int operator) {
 	int packetType = Integer.parseInt(dataPacket[PacketInformation.PacketStructrue.PACKET_TYPE]);
-	System.out.println("dicisionOperator()");
+	Main.log("dicisionOperator()");
 	switch (operator) {
 	case PacketInformation.Operation.RESPONSE:
 	    responsePacket(packetType);
@@ -139,11 +140,13 @@ public class Network implements Runnable {
 	switch (packetType) {
 	case PacketInformation.PacketType.IS_OK:
 	    view.payment.setVisible(false);
+	    view.buySuccess();
 	    break;
 	case PacketInformation.PacketType.IS_FAIL:
-	    
+	    view.payment.setVisible(false);
+	    view.buyFail();
 	    break;
-	    default:
+	default:
 	}
     }
 
@@ -243,7 +246,7 @@ public class Network implements Runnable {
 	buff.append(data);
 	buff.append("!");
 
-	System.out.println(buff.toString());
+	Main.log(buff.toString());
 	writer.println(buff.toString());
     }
 
@@ -259,7 +262,7 @@ public class Network implements Runnable {
 	buff.append(data);
 	buff.append("!");
 
-	System.out.println(buff.toString());
+	Main.log(buff.toString());
 	writer.println(buff.toString());
     }
 
@@ -282,7 +285,7 @@ public class Network implements Runnable {
 	if (writer != null) {
 	    writer.println(str);
 	} else {
-	    System.out.println("null");
+	    Main.log("null");
 	}
     }
 

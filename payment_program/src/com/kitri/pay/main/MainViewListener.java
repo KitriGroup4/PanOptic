@@ -15,15 +15,15 @@ public class MainViewListener extends MouseAdapter implements ActionListener {
     @Override
     public void mouseClicked(MouseEvent e) {
 	super.mouseClicked(e);
-	System.out.println(view.timeButton.length);
+	Main.log(view.timeButton.length);
 	Object o = e.getSource();
 	
 	if (logic.isClickButton(o, view.timeButton, view.isClickTime, view.timeMoney)) {
 	    logic.setFalseButton(view.pointButton, view.isClickPoint, view.pointMoney);
-	    System.out.println("time");
+	    Main.log("time");
 	} else if (logic.isClickButton(o, view.pointButton, view.isClickPoint, view.pointMoney)) {
 	    logic.setFalseButton(view.timeButton, view.isClickTime, view.timeMoney);
-	    System.out.println("point");
+	    Main.log("point");
 	}
     }
 

@@ -65,7 +65,7 @@ public class ClientHandlerThread extends Thread {
 
 	try {
 
-	    System.out.println("Client :: started");
+	    Main.log("Client :: started");
 	    client.configureBlocking(false);
 	    selector = Selector.open();
 
@@ -111,7 +111,7 @@ public class ClientHandlerThread extends Thread {
 
 	} catch (Exception e) {
 	    // deleteThreadSocket();
-	    System.out.println("client error : " + e.toString());
+	    Main.log("client error : " + e.toString());
 	    e.printStackTrace();
 	} finally {
 
@@ -119,17 +119,17 @@ public class ClientHandlerThread extends Thread {
 		try {
 		    done = true;
 		    // client.finishConnect();
-		    System.out.println("Client :: Close Socket");
+		    Main.log("Client :: Close Socket");
 		    client.socket().close();
 		    client.close();
 		} catch (IOException e) {
-		    System.out.println("client finally error : " + e.toString());
+		    Main.log("client finally error : " + e.toString());
 		    e.printStackTrace();
 		}
 	    }
 
 	    deleteThreadSocket();
-	    System.out.println("Client :: bye");
+	    Main.log("Client :: bye");
 	    Server.addLog("client :: bye");
 	}
     }
@@ -173,7 +173,7 @@ public class ClientHandlerThread extends Thread {
 		    dataPacket[i] = temp[i];
 		}
 
-		System.out.println("conbinePacket() : " + dataPacket[0] + "` " + dataPacket[1] + "` " + dataPacket[2]
+		Main.log("conbinePacket() : " + dataPacket[0] + "` " + dataPacket[1] + "` " + dataPacket[2]
 			+ "` " + dataPacket[3]);
 		dicisionProgram();
 
@@ -186,7 +186,7 @@ public class ClientHandlerThread extends Thread {
     }
 
     private void dicisionProgram() {
-	System.out.println("dicisionProgram()");
+	Main.log("dicisionProgram()");
 	int programValue;
 	int operator;
 
@@ -212,7 +212,7 @@ public class ClientHandlerThread extends Thread {
     }
 
     private void dicisionOperator(int operator) {
-	System.out.println("dicisionOperator()");
+	Main.log("dicisionOperator()");
 	int packetType = Integer.parseInt(dataPacket[PacketInformation.PacketStructrue.PACKET_TYPE]);
 
 	switch (operator) {
@@ -234,7 +234,7 @@ public class ClientHandlerThread extends Thread {
     }
 
     private void buyRequest(int packetType) {
-	System.out.println("buyRequest");
+	Main.log("buyRequest");
 	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
 	
 	switch(packetType){
@@ -250,7 +250,7 @@ public class ClientHandlerThread extends Thread {
     }
 
     private void joinRequest(int packetType) {
-	System.out.println("joinRequest()");
+	Main.log("joinRequest()");
 	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
 
 	switch (packetType) {
@@ -265,7 +265,7 @@ public class ClientHandlerThread extends Thread {
     }
 
     private void loginRequest(int packetType) {
-	System.out.println("loginRequest()");
+	Main.log("loginRequest()");
 	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
 
 	switch (packetType) {
@@ -277,9 +277,9 @@ public class ClientHandlerThread extends Thread {
     }
 
     private void getRequest(int packetType) {
-	System.out.println("getRequest()");
+	Main.log("getRequest()");
 	String data = dataPacket[PacketInformation.PacketStructrue.DATA];
-	System.out.println(packetType);
+	Main.log(packetType);
 	switch (packetType) {
 	case PacketInformation.PacketType.COM_PREPAID_INFO:
 	    services.getComPrepaidInfo();
@@ -307,7 +307,7 @@ public class ClientHandlerThread extends Thread {
 	buff.append(data);
 	buff.append("!");
 	buff.append("\n");
-	System.out.println("send : " + buff.toString());
+	Main.log("send : " + buff.toString());
 	try {
 	    client.write(ByteBuffer.wrap(buff.toString().getBytes()));
 	} catch (IOException e) {
@@ -348,7 +348,7 @@ public class ClientHandlerThread extends Thread {
 	buff.append("!");
 	buff.append("\n");
 
-	System.out.println("send : " + buff.toString());
+	Main.log("send : " + buff.toString());
 	try {
 	    client.write(ByteBuffer.wrap(buff.toString().getBytes()));
 	} catch (IOException e) {
@@ -398,7 +398,7 @@ public class ClientHandlerThread extends Thread {
     public void sendPacket(String packet) {
 	try {
 
-	    System.out.println(packet);
+	    Main.log(packet);
 	    packet += "\n";
 	    client.write(ByteBuffer.wrap(packet.getBytes()));
 

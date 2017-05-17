@@ -209,7 +209,8 @@ public class UserJoin extends JInternalFrame {
 	joinEmailTf = new JTextField();
 	SubInfoLabelPanel.add(joinEmailTf);
 	joinEmailTf.setColumns(10);
-
+	
+	isMale = true;
 	joinCloseBtn.addActionListener(listener);
 	joinConfirmBtn.addActionListener(listener);
 	overCheckBtn.addActionListener(listener);

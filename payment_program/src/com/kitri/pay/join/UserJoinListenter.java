@@ -22,7 +22,7 @@ public class UserJoinListenter implements ActionListener {
 	if (o == join.joinCloseBtn) {
 	    join.setVisible(false);
 	} else if (o == join.overCheckBtn) {
-	    System.out.println("checkId");
+	    Main.log("checkId");
 	    logic.checkId(join.joinId.getText().trim());
 	} else if (o == join.joinConfirmBtn) {
 	    logic.joinUser(join);

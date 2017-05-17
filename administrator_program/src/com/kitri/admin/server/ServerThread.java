@@ -30,7 +30,7 @@ public class ServerThread extends Thread {
 	Selector selector = null;
 
 	try {
-	    System.out.println("Server :: started");
+	    Main.log("Server :: started");
 	    Server.addLog("Server :: started");
 
 	    server = ServerSocketChannel.open();
@@ -40,7 +40,7 @@ public class ServerThread extends Thread {
 	    selector = Selector.open();
 	    server.register(selector, SelectionKey.OP_ACCEPT);
 
-	    System.out.println("Server :: waiting for accept");
+	    Main.log("Server :: waiting for accept");
 
 	    while (!Thread.interrupted() && !abortable.isDone()) {
 		selector.select(3000);
@@ -56,9 +56,9 @@ public class ServerThread extends Thread {
 			    // Server.addLog("clientList size : " +
 			    // clientList.size());
 			    Server.addLog("socketList size : " + socketList.size());
-			    // System.out.println("clientList size : " +
+			    // Main.log("clientList size : " +
 			    // clientList.size());
-			    System.out.println("socketList size : " + socketList.size());
+			    Main.log("socketList size : " + socketList.size());
 			    Thread t = new ClientHandlerThread(abortable, client, selector, this, handlerCount);
 			    // socketList.add((ClientHandlerThread)t);
 			    socketList.put(handlerCount, (ClientHandlerThread) t);
@@ -75,7 +75,7 @@ public class ServerThread extends Thread {
 	    }
 
 	} catch (Exception e) {
-	    System.out.println("ServerThread : " + e.toString());
+	    Main.log("ServerThread : " + e.toString());
 	    e.printStackTrace();
 
 	} finally {
@@ -112,7 +112,7 @@ public class ServerThread extends Thread {
 	    // }
 	    // }
 
-	    System.out.println("Server :: done");
+	    Main.log("Server :: done");
 	    Server.addLog("Server :: done");
 
 	}

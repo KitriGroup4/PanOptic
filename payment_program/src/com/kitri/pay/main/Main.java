@@ -7,6 +7,7 @@ import com.kitri.pay.network.Network;
 public class Main {
     public static Network network;
     private static Thread thread;
+    public static boolean isLog = false;
 
     public static void main(String[] args) {
 	EventQueue.invokeLater(new Runnable() {
@@ -24,4 +25,15 @@ public class Main {
 	});
     }
 
+    public static void log(String str) {
+	if (isLog) {
+	    System.out.println(str);
+	}
+    }
+    
+    public static void log(int num){
+	if(isLog){
+	    System.out.println(num);
+	}
+    }
 }

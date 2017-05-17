@@ -40,6 +40,7 @@ public class PacketInformation {
 	public static final byte ID_PW = 6;
 	public static final byte POINT = 7;
 	public static final byte TIME = 8;
+	public static final byte CARD = 9;
     }
 
     public static class ComPrepaidInfo {

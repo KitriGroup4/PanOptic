@@ -22,7 +22,7 @@ public class Services {
     }
 
     public void getComPrepaidInfo() {
-	System.out.println("getComPrepaidInfo()");
+	Main.log("getComPrepaidInfo()");
 	ComPrepaidInfoDao dao = new ComPrepaidInfoDao();
 	ArrayList<ComPrepaidInfoDto> dtos = dao.selectAll();
 
@@ -40,7 +40,7 @@ public class Services {
     }
 
     public void getPointInfo() {
-	System.out.println("getPointInfo()");
+	Main.log("getPointInfo()");
 	PointInfoDao dao = new PointInfoDao();
 	ArrayList<PointInfoDto> dtos = dao.selectAll();
 
@@ -57,7 +57,7 @@ public class Services {
     }
 
     public void checkId(String id) {
-	System.out.println("checkId()");
+	Main.log("checkId()");
 	UserInfoDao dao = new UserInfoDao();
 	if (dao.checkId(id).isEmpty()) {
 	    clientHandlerThread.sendPacket(PacketInformation.Operation.JOIN, PacketInformation.PacketType.CHECK_USER_ID,
@@ -97,10 +97,11 @@ public class Services {
     }
 
     public void joinUser(String data) {
-	System.out.println("joinUser()");
+	Main.log("joinUser()");
 	UserInfoDto dto = new UserInfoDto();
-	dto.setFieldToInsert(data);
+	dto.setField(data);
 	UserInfoDao dao = new UserInfoDao();
+	Main.log(dto.joinToString());
 
 	if (dao.insert(dto)) {
 	    clientHandlerThread.sendPacket(PacketInformation.Operation.JOIN, PacketInformation.PacketType.IS_OK,
@@ -112,12 +113,13 @@ public class Services {
     }
 
     public void buyPoint(String data) {
-	System.out.println("buyPoint()");
+	Main.log("buyPoint()");
 	String[] datas = data.split(","); // index,userNum
-	int userNum = Integer.parseInt(datas[1]);
-	PointInfoDao dao = new PointInfoDao();
-	PointInfoDto dto = dao.select(Integer.parseInt(datas[0]));
+	int userNum = Integer.parseInt(datas[2]);
 
+	PointInfoDao dao = new PointInfoDao();
+	PointInfoDto dto = dao.select(Integer.parseInt(datas[1]));
+	Main.log(dto.toString());
 	UserPointInfoDao uDao = new UserPointInfoDao();
 	UserPointInfoDto uDto = uDao.select(userNum);
 
@@ -137,7 +139,72 @@ public class Services {
     }
 
     public void buyTime(String data) {
-	System.out.println("buyTime()");
+	Main.log("buyTime()");
+	String[] datas = data.split(","); // payType,index,userNum
+	int userNum = Integer.parseInt(datas[2]);
+
+	ComPrepaidInfoDao comDao = new ComPrepaidInfoDao();
+	ComPrepaidInfoDto comDto = comDao.select(Integer.parseInt(datas[1]));
+	UserInfoDao uInfoDao = new UserInfoDao();
+	UserInfoDto uInfoDto;
+
+	if (Integer.parseInt(datas[0]) == PacketInformation.PacketType.POINT) {
+	    UserPointInfoDao uPInfoDao = new UserPointInfoDao();
+	    UserPointInfoDto upInfoDto = uPInfoDao.select(userNum);
+	    
+	    if(upInfoDto == null){
+		clientHandlerThread.sendPacket(PacketInformation.Operation.BUY, PacketInformation.PacketType.IS_FAIL,
+			PacketInformation.IDLE);
+		return;
+	    }
+
+	    Main.log(upInfoDto.toString());
+	    Main.log(comDto.toString());
+	    int left = upInfoDto.getPoint() - comDto.getPrepaidPrice();
+	    if (left < 0) {
+		clientHandlerThread.sendPacket(PacketInformation.Operation.BUY, PacketInformation.PacketType.IS_FAIL,
+			PacketInformation.IDLE);
+		return;
+	    } else {
+		upInfoDto.setPoint(left);
+		uPInfoDao.update(upInfoDto);
+
+		uInfoDto = uInfoDao.select(userNum);
+		Main.log(uInfoDto.toString());
+		if (uInfoDto.getUserLeftTime().equals("null")) {
+		    if (!uInfoDao.updateLeftTime(userNum, comDto.getPrepaidTime() + ":00:00")) {
+			clientHandlerThread.sendPacket(PacketInformation.Operation.BUY,
+				PacketInformation.PacketType.IS_FAIL, PacketInformation.IDLE);
+			return;
+		    }
+		} else {
+		    if (!uInfoDao.updateLeftTime(userNum,
+			    sumTime(uInfoDto.getUserLeftTime(), comDto.getPrepaidTime() + ":00:00"))) {
+			clientHandlerThread.sendPacket(PacketInformation.Operation.BUY,
+				PacketInformation.PacketType.IS_FAIL, PacketInformation.IDLE);
+			return;
+		    }
+		}
+
+	    }
+	} else {
+	    uInfoDto = uInfoDao.select(userNum);
+	    Main.log(uInfoDto.toString());
+	    if (uInfoDto.getUserLeftTime().equals("null")) {
+		if (!uInfoDao.updateLeftTime(userNum, comDto.getPrepaidTime() + ":00:00")) {
+		    clientHandlerThread.sendPacket(PacketInformation.Operation.BUY,
+			    PacketInformation.PacketType.IS_FAIL, PacketInformation.IDLE);
+		    return;
+		}
+	    } else {
+		if (!uInfoDao.updateLeftTime(userNum,
+			sumTime(uInfoDto.getUserLeftTime(), comDto.getPrepaidTime() + ":00:00"))) {
+		    clientHandlerThread.sendPacket(PacketInformation.Operation.BUY,
+			    PacketInformation.PacketType.IS_FAIL, PacketInformation.IDLE);
+		    return;
+		}
+	    }
+	}
 
 	clientHandlerThread.sendPacket(PacketInformation.Operation.BUY, PacketInformation.PacketType.IS_OK,
 		PacketInformation.IDLE);
@@ -203,6 +270,35 @@ public class Services {
 	buff.append("!");
 
 	return buff.toString();
+    }
+
+    private String sumTime(String time1, String time2) {
+	Main.log(time1 + ", " + time2);
+	String[] result = new String[3];
+	for (int i = 0; i < 3; i++) {
+	    result[i] = "0";
+	}
+	String time1s[] = time1.split(":");
+	String time2s[] = time2.split(":");
+
+	final int MAX = 60;
+	int len = time1s.length;
+	int temp;
+	for (int i = 2; i >= 0; i--) {
+	    temp = 0;
+	    temp = Integer.parseInt(time1s[i]) + Integer.parseInt(time2s[i]);
+	    Main.log(Integer.parseInt(time1s[i]) + ", " + Integer.parseInt(time2s[i]));
+
+	    if (temp >= MAX) {
+		if (i != 0) {
+		    result[i - 1] = "1";
+		    result[i] = temp % MAX + "";
+		}
+	    }
+	    result[i] = (temp + Integer.parseInt(result[i])) + "";
+	}
+
+	return result[0] + ":" + result[1] + ":" + result[2];
     }
 
 }

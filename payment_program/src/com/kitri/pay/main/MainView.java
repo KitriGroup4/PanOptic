@@ -17,8 +17,8 @@ public class MainView extends JFrame {
 
     public int[] timeMoney = { 1000, 1200, 1500, 2000, 2500, 3000, 4000, 5000 };
     public int[] pointMoney = { 1000, 2500, 4000, 7000, 10000 };
-    public String[] timeStr = { "1시간  1000원", "1시간 30분  1200원", "2시간  1500원", "2시간30분  2000원", "3시간  2500원",
-	    "4시간  3000원", "5시간  4000원", "7시간  5000원" };
+    public String[] timeStr = { "1시간  1000원", "2시간  1200원", "3시간  1500원", "4시간  2000원", "5시간  2500원", "6시간  3000원",
+	    "7시간  4000원", "8시간  5000원" };
     public String[] pointStr = { "1000P  1000원", "3000P  2500원", "5000P  4000원", "10000P  7000원", "15000P  10000원" };
     public String[] functionStr = { "회원가입", "포인트결제", "카드결제" };
     public boolean[] isClickTime;
@@ -54,8 +54,7 @@ public class MainView extends JFrame {
     public PaymentView payment;
     private JInternalFrame internalFrame;
     public JTextArea ta;
-    
-    
+    public int payType;
 
     /**
      * Launch the application.
@@ -79,7 +78,7 @@ public class MainView extends JFrame {
     public MainView() {
 
 	ta = new JTextArea();
-	
+
 	view = this;
 	money = 0;
 
@@ -101,9 +100,6 @@ public class MainView extends JFrame {
 	contentPane.add(payment);
 	contentPane.add(login);
 	contentPane.add(join);
-	
-	
-	
 
 	mainPanel = new JPanel();
 	contentPane.add(mainPanel, BorderLayout.CENTER);
@@ -223,5 +219,20 @@ public class MainView extends JFrame {
 	JOptionPane.showMessageDialog(this, "회원가입을 축하드립니다!!", "회원가입성공", JOptionPane.WARNING_MESSAGE);
 
     }
-    
+
+    public void pointException() {
+	JOptionPane.showMessageDialog(this, "포인트로 포인트를 구매하실수 없습니다.", "포인트 구매 불가", JOptionPane.WARNING_MESSAGE);
+
+    }
+
+    public void buySuccess() {
+	JOptionPane.showMessageDialog(this, "구매 성공했습니다. 이용해주셔서 감사합니다.", "구매성공", JOptionPane.WARNING_MESSAGE);
+
+    }
+
+    public void buyFail() {
+	JOptionPane.showMessageDialog(this, "구매 실패했습니다. 다시 이용해주시기바랍니다.", "구매실패", JOptionPane.WARNING_MESSAGE);
+    }
+
+
 }

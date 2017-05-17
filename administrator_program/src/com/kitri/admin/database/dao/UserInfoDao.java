@@ -36,6 +36,8 @@ public class UserInfoDao extends Dao {
 		dto.setUserAccuTime(rs.getString(7));
 		dto.setUserLeftTime(rs.getString(8));
 		dto.setUserJoinDate(rs.getString(9));
+		dto.setUserBirth(rs.getString(10));
+		dto.setIsMale(rs.getString(11));
 
 		dtos.add(dto);
 	    }
@@ -55,7 +57,7 @@ public class UserInfoDao extends Dao {
 	try {
 	    con = getConnection();
 	    preStmt = con.prepareStatement(
-		    "insert into user_info(user_num, user_name, user_id, user_pw, user_hp, user_email, user_birth, is_male) values(user_info_seq.nextval,?,?,?,?,?,?,?)");
+		    "insert into user_info(user_num, user_name, user_id, user_pw, user_hp, user_email, user_birth, is_male) values(user_num_seq.nextval,?,?,?,?,?,?,?)");
 	    preStmt.setString(1, name);
 	    preStmt.setString(2, id);
 	    preStmt.setString(3, pw);
@@ -78,18 +80,20 @@ public class UserInfoDao extends Dao {
     public boolean insert(UserInfoDto dto) {
 	int result = 0;
 	System.out.println("insert(dto)");
-	System.out.println(dto.toString());
+	System.out.println(dto.joinToString());
 	try {
 	    con = getConnection();
-	    preStmt = con.prepareStatement(
-		    "insert into user_info(user_num, user_name, user_id, user_pw, user_hp, user_email, user_birth, is_male) values(user_info_seq.nextval,?,?,?,?,?,?,?)");
+	    preStmt = con
+		    .prepareStatement("insert into user_info values(user_num_seq.nextval,?,?,?,?,?,?,?,SYSDATE,?,?)");
 	    preStmt.setString(1, dto.getUserName());
 	    preStmt.setString(2, dto.getUserId());
 	    preStmt.setString(3, dto.getUserPw());
 	    preStmt.setString(4, dto.getUserHp());
 	    preStmt.setString(5, dto.getUserEmail());
-	    preStmt.setString(6, dto.getUserBirth());
-	    preStmt.setString(7, dto.getIsMale());
+	    preStmt.setString(6, dto.getUserAccuTime());
+	    preStmt.setString(7, dto.getUserLeftTime());
+	    preStmt.setString(8, dto.getUserBirth());
+	    preStmt.setString(9, dto.getIsMale());
 	    result = preStmt.executeUpdate();
 
 	} catch (Exception e) {
@@ -101,6 +105,65 @@ public class UserInfoDao extends Dao {
 
 	return result == 0 ? false : true;
 
+    }
+
+    public boolean updateLeftTime(int num, String leftTime) {
+	int result = 0;
+	
+	try {
+	    con = getConnection();
+	    preStmt = con.prepareStatement("update user_info set user_left_time = ? where user_num = ?");
+	    preStmt.setString(1, leftTime);
+	    preStmt.setInt(2, num);
+	    result = preStmt.executeUpdate();
+	    
+	} catch (SQLException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} finally {
+	    resetPreStmt();
+	}
+	
+	return result == 1 ? true : false;
+    }
+
+    public UserInfoDto select(int num) {
+	UserInfoDto dto = null;
+
+	try {
+	    con = getConnection();
+	    preStmt = con.prepareStatement("select * from user_info where user_num = ?");
+	    preStmt.setInt(1, num);
+	    rs = preStmt.executeQuery();
+
+	    // preStmt = con.prepareStatement("select * from user_info where
+	    // user_num = ?");
+	    // preStmt.setString(1, "0");
+
+	    while (rs.next()) {
+		dto = new UserInfoDto();
+		dto = new UserInfoDto();
+		dto.setUserNum(rs.getInt(1));
+		dto.setUserName(rs.getString(2));
+		dto.setUserId(rs.getString(3));
+		dto.setUserPw(rs.getString(4));
+		dto.setUserHp(rs.getString(5));
+		dto.setUserEmail(rs.getString(6));
+		dto.setUserAccuTime(rs.getString(7));
+		dto.setUserLeftTime(rs.getString(8));
+		dto.setUserJoinDate(rs.getString(9));
+		dto.setUserBirth(rs.getString(10));
+		dto.setIsMale(rs.getString(11));
+
+	    }
+
+	} catch (Exception e) {
+	    e.printStackTrace();
+	} finally {
+	    resetStmt();
+	}
+
+	return dto;
     }
 
     public String checkId(String id) {

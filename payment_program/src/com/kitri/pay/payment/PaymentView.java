@@ -134,5 +134,9 @@ public class PaymentView extends JInternalFrame {
 
 	}
     }
+    
+    public void resetPoints(){
+	draw.points = new Vector<>();
+    }
 
 }
