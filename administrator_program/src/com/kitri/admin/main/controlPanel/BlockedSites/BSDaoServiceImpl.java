@@ -21,8 +21,7 @@ public class BSDaoServiceImpl extends Dao implements BSDaoService {
 	}
 	
 	public Vector<Vector> selectAll() {
-		String query = "SELECT * FROM blockedsites order by blocked_site_num";
-
+		String query = "SELECT * FROM blockedsites";
 		try {
 			// 데이터베이스의 연결을 설정한다.
 			con = getConnection();
@@ -56,11 +55,9 @@ public class BSDaoServiceImpl extends Dao implements BSDaoService {
 
 	public boolean insert(String url, String name) {
 		int result = 0;
-		String query = ("insert into blockedsites(blockedsite_num, blockedsite_url, blockedsite_name)"
-				+ "values(blockedsites_seq.nextval, ?, ?)");
 		try {
 			con = getConnection();
-			preStmt = con.prepareStatement(query);
+			preStmt = con.prepareStatement("insert into blockedsites(BLCOKEDSITE_NUM, BLOCKEDSITE_URL, BLOCKEDSITE_NAME) values(51, ?, ?)");
 			preStmt.setString(1, url);
 			preStmt.setString(2, name);
 			result = preStmt.executeUpdate();
@@ -78,7 +75,7 @@ public class BSDaoServiceImpl extends Dao implements BSDaoService {
 			con = getConnection();
 			con.setAutoCommit(false);
 			stmt = con.createStatement();
-			preStmt = con.prepareStatement("update blockedsites set blockedsite_num = blockedsites_seq.nextval, blockedsite_url =? , blockedsite_name = ?");
+			preStmt = con.prepareStatement("update blockedsites set blockedsite_num = blocked_site_num_seq.nextval, blockedsite_url =? , blockedsite_name = ?");
 							
 			preStmt.setString(1, dto.getBlockedsite_url());
 			preStmt.setString(2, dto.getBlockedsite_name());
@@ -113,9 +110,10 @@ public class BSDaoServiceImpl extends Dao implements BSDaoService {
 			con = getConnection();
 			con.setAutoCommit(false);
 			stmt = con.createStatement();
+//
 			rs = stmt.executeQuery("delete from blockedsites where blockedsite_name = ?");
 			preStmt.setString(1, name);
-
+System.out.println("s나와?");
 			int row = preStmt.executeUpdate();
 			if (row > 0)
 				result = true;
