@@ -29,30 +29,37 @@ public class BSListFrame extends JFrame {
 	public JButton edit;
 	
 	public BSCon control;
-	public BSDb db;
 	public RegBS reg;
 	public DelBS del;
+	public BSDaoServiceImpl daoDb;
+	
 	
 	public Vector<String> columnNames;
+	
+	public Vector<String> rowdata;
 	public Vector<Vector> rows;
+//	public Vector<BSDto> rows;
 
 	public BSListFrame() {
 		super("차단 싸이트 관리");
 		
 		control = new BSCon(this);
-		db = new BSDb();
+		daoDb = new BSDaoServiceImpl();
 		reg = new RegBS();
 		del = new DelBS();
 		
 		columnNames = new Vector<String>();
 		rows = new Vector<Vector> ();
+//		rows = new Vector<BSDto> ();
+		daoDb = new BSDaoServiceImpl();
+		rows = daoDb.selectAll();
 		
 		int len = BSConstant.column.length;
 		for (int i = 0; i < len; i++) {
 			columnNames.add(BSConstant.column[i]);
 		}
 		
-		jTable= new JTable(db.rows, columnNames);
+		jTable= new JTable(rows, columnNames);
 		jScollPane = new JScrollPane(jTable);	
 
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);

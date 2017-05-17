@@ -9,8 +9,4 @@ public interface BSService {
 	
 	void viewReg();
 	void viewDel();
-	
-	void insert();
-	void delete();
-	void update();
 }

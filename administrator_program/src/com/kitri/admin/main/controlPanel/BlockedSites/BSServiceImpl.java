@@ -3,6 +3,7 @@ package com.kitri.admin.main.controlPanel.BlockedSites;
 public class BSServiceImpl implements BSService {
 	// 필요한 메소드 정리
 	BSListFrame bsFrame;
+	BSDaoServiceImpl daoDb;
 
 	public BSServiceImpl(BSListFrame bsFrame) {
 		super();
@@ -35,34 +36,13 @@ public class BSServiceImpl implements BSService {
 
 	@Override
 	public void viewReg() {
-		// TODO Auto-generated method stub
-
+		bsFrame.reg.setVisible(true);
 	}
 
 	@Override
 	public void viewDel() {
-		// TODO Auto-generated method stub
-
+		bsFrame.del.setVisible(true);
 	}
-
-	@Override
-	public void insert() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-
-	}
-
 	//
 	// public boolean deleteBlockedSite (String siteName) {
 	// boolean flag = false;
