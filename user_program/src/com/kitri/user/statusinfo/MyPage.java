@@ -17,28 +17,29 @@ import java.awt.Font;
 public class MyPage extends JFrame {
 
 	private JPanel BackgroundPane;
-	private JTextField mypg_pw_tf;
-	private JTextField mypg_hp_tf;
-	private JTextField mypg_mail_tf;
+	public JTextField mypg_pw_tf;
+	public JTextField mypg_hp_tf;
+	public JTextField mypg_mail_tf;
 	private JPanel Middle_Pane;
-	private JLabel mypg_name;
+	public JLabel mypg_name;
 	private JLabel mypg_name_label;
 	private JLabel mypg_id_label;
 	private JLabel mypg_pw_label;
 	private JLabel mypg_hp_label;
 	private JLabel mypg_mail_label;
 	private JLabel mypg_accu_time_label;
-	private JLabel mypg_id;
+	public JLabel mypg_id;
 	private JLabel mypg_point_label;
-	private JLabel mypg_rest_time;
-	private JLabel mypg_accu_time;
+	public JLabel mypg_rest_time;
+	public JLabel mypg_accu_time;
 	private JLabel mypg_rest_time_label;
-	private JLabel mypg_point;
-	private JButton mypg_change_btn;
-	private JButton mypg_cancel_btn;
+	public JLabel mypg_point;
+	public JButton mypg_change_btn;
+	public JButton mypg_cancel_btn;
 	private JLabel mypage_title_label;
 	private JPanel Bottom_Pane;
 	private JPanel Title_Pane;
+	public MyPageListener listener;
 
 	/**
 	 * Launch the application.
@@ -61,6 +62,7 @@ public class MyPage extends JFrame {
 	 * Create the frame.
 	 */
 	public MyPage() {
+		listener = new MyPageListener(this);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 382, 489);
 		BackgroundPane = new JPanel();
@@ -172,6 +174,7 @@ public class MyPage extends JFrame {
 		Title_Pane.add(mypage_title_label);
 		
 		setVisible(false);
+		mypg_cancel_btn.addActionListener(listener);
 		
 	}
 }

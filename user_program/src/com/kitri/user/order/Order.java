@@ -28,18 +28,19 @@ public class Order extends JFrame {
 	private JPanel OrderTitlePane;
 	private JLabel order_title_label;
 	private JPanel OrderMenuPane;
-	private JPanel OrderContentsPane;
-	private JButton orderFoodbtn;
-	private JButton orderSnackbtn;
+	public JPanel OrderContentsPane;
+	public JButton orderFoodbtn;
+	public JButton orderSnackbtn;
 	private JLabel emptyLabel;
 	private JLabel emptyLabel1;
-	private JButton pointPaybtn;
-	private JLabel totalPriceLabel;
-	private JButton orderBeveragebtn;
-	private OrderSnack SnackPane;
-	private OrderBeverage BeveragePane;
-	private OrderFood FoodPane;
-
+	public JButton pointPaybtn;
+	public JLabel totalPriceLabel;
+	public JButton orderBeveragebtn;
+	public OrderSnackPane SnackPane;
+	public OrderBeveragePane BeveragePane;
+	public OrderFoodPane FoodPane;
+	public OrderListener listener;
+	public CardLayout cl_OrderContentsPane = new CardLayout();
 	/**
 	 * Launch the application.
 	 */
@@ -60,9 +61,10 @@ public class Order extends JFrame {
 	 * Create the frame.
 	 */
 	public Order() {
-		CardLayout cl_OrderContentsPane = new CardLayout();
+		listener = new OrderListener(this);
+		
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 800, 548);
+		setBounds(100, 100, 900, 600);
 		BackgroundPane = new JPanel();
 		BackgroundPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(BackgroundPane);
@@ -80,53 +82,32 @@ public class Order extends JFrame {
 		BackgroundPane.add(OrderMenuPane, BorderLayout.WEST);
 		OrderMenuPane.setLayout(new GridLayout(7, 1, 0, 0));
 		
-	
 		OrderContentsPane = new JPanel();
-		BackgroundPane.add(OrderContentsPane, BorderLayout.CENTER);
-
+		
 		OrderContentsPane.setLayout(cl_OrderContentsPane);
-		FoodPane = new OrderFood();
-		BeveragePane = new OrderBeverage();
-		SnackPane =  new OrderSnack();
-		OrderContentsPane.add(FoodPane,"1");
+		BeveragePane = new OrderBeveragePane();
+		SnackPane =  new OrderSnackPane();
+		FoodPane = new OrderFoodPane();
+		OrderContentsPane.add(FoodPane, "1");
 		OrderContentsPane.add(BeveragePane,"2");
 		OrderContentsPane.add(SnackPane,"3");
 		
+		BackgroundPane.add(OrderContentsPane, BorderLayout.CENTER);
+		
+		
+		
+		
 		orderFoodbtn = new JButton("\uC74C\uC2DD");
 		OrderMenuPane.add(orderFoodbtn);
-		
-		orderFoodbtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				cl_OrderContentsPane.show(OrderContentsPane,"1");
-				System.out.println("1");
-				
-			}
-		});
+
 		orderSnackbtn = new JButton("\uC2A4\uB0B5");
 		OrderMenuPane.add(orderSnackbtn);
 		
-		orderSnackbtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				cl_OrderContentsPane.show(OrderContentsPane,"3");
-				System.out.println("3");
-			}
-		});
 
 		orderBeveragebtn = new JButton("\uC74C\uB8CC");
 		OrderMenuPane.add(orderBeveragebtn);
 		
-		orderBeveragebtn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				cl_OrderContentsPane.show(OrderContentsPane,"2");
-				System.out.println(2);
-			}
-		});
+
 		emptyLabel = new JLabel("");
 		OrderMenuPane.add(emptyLabel);
 			
@@ -140,6 +121,10 @@ public class Order extends JFrame {
 		OrderMenuPane.add(pointPaybtn);
 		
 		setVisible(false);
+		orderFoodbtn.addActionListener(listener);
+		orderBeveragebtn.addActionListener(listener);
+		orderSnackbtn.addActionListener(listener);
+		pointPaybtn.addActionListener(listener);
 	}
 	
 }
